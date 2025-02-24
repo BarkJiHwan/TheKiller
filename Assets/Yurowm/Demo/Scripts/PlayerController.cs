@@ -10,12 +10,12 @@ public class PlayerController : MonoBehaviour {
 
 	private Animator animator;
 
-	void Awake() {
-		animator = GetComponent<Animator> ();
+	void Awake()
+	{
+		animator = GetComponent<Animator>();
 		if (arsenal.Length > 0)
-			SetArsenal (arsenal[0].name);
-		}
-
+			SetArsenal(arsenal[0].name);
+	}
 	public void SetArsenal(string name) {
 		foreach (Arsenal hand in arsenal) {
 			if (hand.name == name) {

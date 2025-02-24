@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.XR;
 using static PlayerController;
 
-
 public class PlayerWeaponSwap : MonoBehaviour
 {
     [System.Serializable]
@@ -30,13 +29,13 @@ public class PlayerWeaponSwap : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
-        {//1번누르면 무기를 해제
+        {
             SetWeapon(_weapons[0].name);
-        }//2번누르면 권총
+        }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             SetWeapon(_weapons[1].name);
-        }//3번누르면 스나이퍼
+        }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             SetWeapon(_weapons[2].name);
@@ -59,7 +58,7 @@ public class PlayerWeaponSwap : MonoBehaviour
                     newtGunTpye.transform.localPosition = Vector3.zero;
                     newtGunTpye.transform.localRotation = Quaternion.Euler(90, 0, 0);
                 }
-                //총에 맞는 애니메이터로 갈아낌
+                //총에 맞는 애니메이터로 갈아낌                
                 animator.runtimeAnimatorController = weapon.controller;
             }
         }
