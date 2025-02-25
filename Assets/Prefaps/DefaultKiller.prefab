@@ -1641,10 +1641,9 @@ GameObject:
   m_Component:
   - component: {fileID: 400096}
   - component: {fileID: 9500000}
-  - component: {fileID: 2440695808950624434}
-  - component: {fileID: 831350839872143675}
-  - component: {fileID: -5548427680632480398}
-  - component: {fileID: 7638551530566198967}
+  - component: {fileID: -8158627433950340033}
+  - component: {fileID: 3007624078011565726}
+  - component: {fileID: 5865027218675228542}
   m_Layer: 0
   m_Name: DefaultKiller
   m_TagString: Untagged
@@ -1691,7 +1690,58 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!54 &2440695808950624434
+--- !u!114 &-8158627433950340033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf32302d8d550374592d4a712e397f91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  myCamera: {fileID: 0}
+  moveSpeed: 10
+  turnSpeed: 80
+  mouseSensitvity: 0
+  mouseSensitvity_notAiming: 300
+  mouseSensitvity_aiming: 50
+  wantedYRotation: 0
+  wantedCameraXRotation: 0
+  currentCameraXRotation: 0
+  topAngleView: 60
+  bottomAngleView: -45
+  RigPistolRight: {fileID: 400000}
+  _weapons:
+    name: Sniper
+    GunTpye: {fileID: 100000, guid: 0c5883be293ba704c8811b2db86e50f6, type: 3}
+    controller: {fileID: 9100000, guid: dffbd9326394a8d47a87a1e2aec70a59, type: 2}
+--- !u!136 &3007624078011565726
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100096}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.12
+  m_Height: 1.18
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.6, z: 0}
+--- !u!54 &5865027218675228542
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1718,63 +1768,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!136 &831350839872143675
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100096}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.09169694
-  m_Height: 1.0096731
-  m_Direction: 1
-  m_Center: {x: -0.008015744, y: 0.42976606, z: -0.030000001}
---- !u!114 &-5548427680632480398
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf32302d8d550374592d4a712e397f91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 5
-  turnSpeed: 10
---- !u!114 &7638551530566198967
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4dfe5792f5ea1c41b56f83052706785, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  RigPistolRight: {fileID: 400000}
-  _weapons:
-  - name: bare hands
-    GunTpye: {fileID: 0}
-    controller: {fileID: 9100000, guid: e4cd1ce69c41e88418835774141aab54, type: 2}
-  - name: Pistol
-    GunTpye: {fileID: 100000, guid: 617bfbd7b9542844abaf254a48bc9219, type: 3}
-    controller: {fileID: 9100000, guid: 05fc60b64e4793a428d492c88c7135ec, type: 2}
-  - name: Sniper
-    GunTpye: {fileID: 100000, guid: 0c5883be293ba704c8811b2db86e50f6, type: 3}
-    controller: {fileID: 9100000, guid: dffbd9326394a8d47a87a1e2aec70a59, type: 2}

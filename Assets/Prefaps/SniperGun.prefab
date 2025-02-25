@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 400000}
   - component: {fileID: 3300000}
   - component: {fileID: 2300000}
-  - component: {fileID: 6482996565609879285}
+  - component: {fileID: 471753563590381712}
   m_Layer: 0
   m_Name: SniperGun
   m_TagString: Untagged
@@ -85,7 +85,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &6482996565609879285
+--- !u!114 &471753563590381712
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -94,14 +94,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 100000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c2719e2c269889544856250e78daae67, type: 3}
+  m_Script: {fileID: 11500000, guid: de2788e0584e10845bd029963af2d82b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitvity: 0
-  mouseSensitvity_notAiming: 300
-  mouseSensitvity_aiming: 50
-  wantedCameraXRotation: 0
-  wantedYRotation: 0
   shoot_sound: {fileID: 0}
   gunPrecision_notAiming: 200
   gunPrecision_aiming: 100
@@ -111,7 +106,7 @@ MonoBehaviour:
   recoilAmount_x: 0.5
   recoilAmount_y: 0.5
   bulletPrefabs: {fileID: 4440924034055739044, guid: 43e328bae3536a84eaca0891841b6f1d, type: 3}
-  muzzel: {fileID: 3091559992612071462}
+  muzzle: {fileID: 3091559992612071462}
 --- !u!1 &3091559992612071462
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,12 +117,12 @@ GameObject:
   m_Component:
   - component: {fileID: 3285702658067641906}
   m_Layer: 0
-  m_Name: Muzzel
+  m_Name: Muzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3285702658067641906
 Transform:
   m_ObjectHideFlags: 0

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Pistol : MonoBehaviour
 {
     private PlayerWeaponSwap PWS;
-    public MouseController mCr;
+    //public MouseController mCr;
     public AudioSource shoot_sound;
 
     //에이밍 정밀도
@@ -33,7 +33,7 @@ public class Pistol : MonoBehaviour
     void Start()
     {
         PWS = GetComponent<PlayerWeaponSwap>();
-        mCr = GetComponent<MouseController>();
+        //mCr = GetComponent<MouseController>();
         bulletsCount = 25;
     }
 
@@ -91,8 +91,8 @@ public class Pistol : MonoBehaviour
         currentRecoilZPos -= recoilAmount_z * 1.5f; // Z축 반동 증가
         currentRecoilXPos -= (Random.value - 0.5f) * recoilAmount_x * 1.2f; // X축 반동 증가
         currentRecoilYPos -= (Random.value - 0.5f) * recoilAmount_y * 1.2f; // Y축 반동 증가
-        mCr.wantedCameraXRotation -= Mathf.Abs(currentRecoilYPos * gunPrecision * 1.3f); // 카메라 X축 회전 증가
-        mCr.wantedYRotation -= (currentRecoilXPos * gunPrecision * 1.3f); // 카메라 Y축 회전 증가
+        //mCr.wantedCameraXRotation -= Mathf.Abs(currentRecoilYPos * gunPrecision * 1.3f); // 카메라 X축 회전 증가
+        //mCr.wantedYRotation -= (currentRecoilXPos * gunPrecision * 1.3f); // 카메라 Y축 회전 증가
 
         expandValues_crosshair += new Vector2(8, 16); // 십자선 확장 값 증가
         GunCoolDown = 0.5f;//총 쿨타입 권총 0.5초
