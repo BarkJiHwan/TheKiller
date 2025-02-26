@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Rendering;
 using static PlayerController;
 
 public enum PlayerState
@@ -19,79 +21,70 @@ public enum PlayerState
 public class PlayerActions : MonoBehaviour
 {
     public PlayerState playerState { get; set; }
-    [SerializeField] Animator animator;
+    [SerializeField] public Animator animator;
+    private IState currentState;
+    private Dictionary<PlayerState, IState> states;
 
     void Start()
     {
-        playerState = PlayerState.IDLE;
+        animator = GetComponent<Animator>();
+        states = new Dictionary<PlayerState, IState>
+        {
+            { PlayerState.IDLE, new IdleState(this) },
+            { PlayerState.WALK, new WalkState(this) },
+            { PlayerState.RUN, new RunState(this) },
+            { PlayerState.AIMING, new AimingState(this) },
+            { PlayerState.ATTACK, new AttackState(this) },
+            { PlayerState.WARY, new WaryState(this) },
+            { PlayerState.CROUCHINGRUN, new CrouchingRunState(this) },
+            { PlayerState.DEATH, new DeathState(this) }
+        };
+        ChangeState(PlayerState.IDLE);
     }
+
     void Update()
     {
-        UpdateAnimation();
-        UpdateAction();
+        currentState.Update();
     }
-    void UpdateAnimation()
+
+    public void ChangeState(PlayerState newState)
     {
-        switch (playerState)
+        if (currentState != null)
         {
-            case PlayerState.IDLE: animator.SetInteger("State", 1); break;
-            case PlayerState.WALK: animator.SetInteger("State", 2); break;
-            case PlayerState.RUN: animator.SetInteger("State", 3); break;
-            case PlayerState.AIMING: animator.SetInteger("State", 4); break;
-            case PlayerState.ATTACK: animator.SetInteger("State", 5); break;
-            case PlayerState.WARY: animator.SetInteger("State", 6); break;
-            case PlayerState.CROUCHINGRUN: animator.SetInteger("State", 7); break;
-            case PlayerState.DEATH: animator.SetInteger("State", 8); break;
+            currentState.Exit();
         }
+        currentState = states[newState];
+        currentState.Enter();
     }
-    void UpdateAction()
+
+    [System.Serializable]
+    public struct Weapons
+    {//총만들기(추가될 경우 사용)
+        public string name;
+        public GameObject GunTpye;
+        public RuntimeAnimatorController controller;
+    }
+    public Transform RigPistolRight;//총이 소환될 위치(플래이어 캐릭터의 오른쪽 손)
+    public Weapons _weapons;
+
+    public void SetWeapon(string name)
     {
-        switch (playerState)
+        if (_weapons.name == name)
         {
-            case PlayerState.IDLE: Idle(); break;
-            case PlayerState.WALK: Walk(); break;
-            case PlayerState.RUN: Run(); break;
-            case PlayerState.AIMING: Aiming(); break;
-            case PlayerState.ATTACK: Attack(); break;
-            case PlayerState.WARY: Wary(); break;
-            case PlayerState.CROUCHINGRUN: CrouchingRun(); break;
-            case PlayerState.DEATH: Death(); break;
+            if (RigPistolRight.childCount > 0)
+            {//손에있는 자식오브젝트(무기) 제거
+                Destroy(RigPistolRight.GetChild(0).gameObject);
+            }
+            if (_weapons.GunTpye != null)
+            {//들어온 이름에 맞는 총생성
+                GameObject newtGunTpye = (GameObject)Instantiate(_weapons.GunTpye);
+                newtGunTpye.transform.parent = RigPistolRight;
+                newtGunTpye.transform.localPosition = Vector3.zero;
+                //생성과 동시에 X값을 90도 회전시켜 캐릭터의 손에 맞춤(캐릭터가 바뀌면 위치가 바뀔수 있음.)
+                newtGunTpye.transform.localRotation = Quaternion.Euler(90, 0, 0);
+            }
+            //총에 맞는 애니메이터로 갈아낌
+            animator.runtimeAnimatorController = _weapons.controller;
         }
-    }
-    public void Idle()
-    {    }
-    public void Walk()
-    {
-        animator.SetBool("Aiming", false);
-        animator.SetFloat("Speed", 0.5f);
-    }
-    public void Run()
-    {
-        animator.SetBool("Aiming", false);
-        animator.SetFloat("Speed", 1f);
-    }
-    public void Aiming()
-    {
-        animator.SetBool("Squat", false);
-        animator.SetFloat("Speed", 0f);
-        animator.SetBool("Aiming", true);
-    }
-    public void Attack()
-    {
-        Aiming();
-        animator.SetTrigger("Attack");
-    }
-    public void Wary() 
-    {
-        animator.SetBool("Squat", !animator.GetBool("Squat"));
-        animator.SetBool("Aiming", false);
-    }
-    public void CrouchingRun() { }
-    public void Death()
-    {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Death"))
-            animator.Play("Idle", 0);
-        else
-            animator.SetTrigger("Death");
     }
 }

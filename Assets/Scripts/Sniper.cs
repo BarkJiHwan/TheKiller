@@ -1,30 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-using Cinemachine;
 
 public class Sniper : MonoBehaviour
-{    
-    private PlayerWeaponSwap PWS;
-    public AudioSource shoot_sound;        
-    private float GunCoolDown;
-
+{
+    private PlayerActions action;
+    private GameObject player;
+    public AudioSource shoot_sound;
+    private float GunCoolDown;    
     //ÅºÃ¢
     private int bulletsCount;
     public GameObject bulletPrefabs;//ÃÑ¾ËÇÁ¸®ÆÕ
     public GameObject muzzle;//¸ÓÁñ
-
-    
+    public GameObject target;
 
     void Start()
     {
-        PWS = GetComponent<PlayerWeaponSwap>();
+        player = GameObject.FindGameObjectWithTag("Player");
+        action = player.GetComponent<PlayerActions>();
         bulletsCount = 13;
     }
 
     void Update()
-    {        
+    {
         Shooting();
     }
 
@@ -36,6 +34,7 @@ public class Sniper : MonoBehaviour
             {
                 if (Input.GetMouseButtonDown(0))
                 {
+                    action.ChangeState(PlayerState.ATTACK);
                     muzzle.SetActive(true);
                     var firedBullet = Instantiate(bulletPrefabs, muzzle.transform.position, Quaternion.identity);
                     firedBullet.GetComponent<Rigidbody>().AddForce(muzzle.transform.forward * 10, ForceMode.Impulse);
