@@ -12,8 +12,7 @@ public class RunState : IState
     }
 
     public void Enter()
-    {
-        player.animator.SetInteger("State", (int)PlayerState.RUN);
+    {        
         player.animator.SetBool("Aiming", false);
         player.animator.SetFloat("Speed", 2f);
     }

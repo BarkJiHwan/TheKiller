@@ -11,8 +11,7 @@ public class AimingState : IState
     }
     
     public void Enter()
-    {
-        player.animator.SetInteger("State", (int)PlayerState.AIMING);
+    {        
         player.animator.SetFloat("Speed", 0f);
         player.animator.SetBool("Aiming", true);
     }

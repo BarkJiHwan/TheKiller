@@ -50,10 +50,10 @@ public class CameraAction : MonoBehaviour
         float scrollData = Input.GetAxis("Mouse ScrollWheel");
         if (!Input.GetMouseButton(1))
         {
-            camComposer.m_TrackedObjectOffset.x += rX;
+            //camComposer.m_TrackedObjectOffset.x += rX;
+            //camComposer.transform.Rotate(0, (rX * turnSpeed), 0);
             camComposer.m_TrackedObjectOffset.y += rY;
-            camComposer.transform.Rotate(0, (rX * turnSpeed), 0);
-            player.transform.rotation = Quaternion.Euler(0, camComposer.transform.eulerAngles.y, 0);
+            player.transform.Rotate(0, rX, 0);
         }
         if (Input.GetMouseButtonDown(1))
         {
@@ -78,9 +78,7 @@ public class CameraAction : MonoBehaviour
             rY *= zoomRatio * 0.5f;
 
             zoomInCamComposer.m_TrackedObjectOffset.x += rX;
-            zoomInCamComposer.m_TrackedObjectOffset.y += rY;           
-
-            float playerRotationX = player.transform.eulerAngles.x;
+            zoomInCamComposer.m_TrackedObjectOffset.y += rY;
         }
         // 마우스 오른쪽 버튼에서 손을 뗐을 때
         if (Input.GetMouseButtonUp(1))

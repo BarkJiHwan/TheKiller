@@ -11,8 +11,7 @@ public class AttackState : IState
     }
 
     public void Enter()
-    {
-        player.animator.SetInteger("State", (int)PlayerState.ATTACK);
+    {        
         player.animator.SetTrigger("Attack");
         player.animator.SetBool("Aiming", true);
     }

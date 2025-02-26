@@ -11,8 +11,7 @@ public class IdleState : IState
         this.player = player;
     }
     public void Enter()
-    {
-        player.animator.SetInteger("State", (int)PlayerState.IDLE);
+    {        
     }
 
     public void Exit()

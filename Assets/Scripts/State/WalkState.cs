@@ -11,8 +11,7 @@ public class WalkState : IState
         this.player = player;
     }
     public void Enter()
-    {
-        player.animator.SetInteger("State", (int)PlayerState.WALK);
+    {        
         player.animator.SetBool("Aiming", false);
         player.animator.SetFloat("Speed", 0.5f);
     }
