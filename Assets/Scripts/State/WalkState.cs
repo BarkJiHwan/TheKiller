@@ -16,7 +16,7 @@ public class WalkState : IState
         player.animator.SetFloat("Speed", 0.5f);
     }
     public void Exit()
-    {
+    { 
         player.animator.SetFloat("Speed", 0f);
     }
     public void Update()

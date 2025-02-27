@@ -101,6 +101,7 @@ MonoBehaviour:
   bulletPrefabs: {fileID: 4440924034055739044, guid: 43e328bae3536a84eaca0891841b6f1d, type: 3}
   muzzle: {fileID: 3091559992612071462}
   target: {fileID: 0}
+  bulletSpeed: 100
 --- !u!1 &3091559992612071462
 GameObject:
   m_ObjectHideFlags: 0
