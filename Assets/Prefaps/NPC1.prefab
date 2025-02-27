@@ -596,7 +596,6 @@ Transform:
   - {fileID: 8819399280599472358}
   - {fileID: 8819399281476164433}
   - {fileID: 8819399280222102730}
-  - {fileID: 8819399281361443693}
   - {fileID: 8819399280134809249}
   - {fileID: 8819399281768927078}
   - {fileID: 8819399281614814995}
@@ -3742,12 +3741,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8819399281361443692}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8819399280201689089}
+  m_Father: {fileID: 5504259220806075269}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &8819399281361443694
 SkinnedMeshRenderer:
@@ -5888,9 +5887,10 @@ GameObject:
   - component: {fileID: 5504259220806075267}
   - component: {fileID: -1676277474143197477}
   - component: {fileID: 7678640531649715605}
+  - component: {fileID: 2255294613556991026}
   m_Layer: 8
   m_Name: NPC1
-  m_TagString: NPC
+  m_TagString: NPCBody
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5908,6 +5908,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 8819399281361443693}
   - {fileID: 711222397081296995}
   - {fileID: 8819399280928753862}
   - {fileID: 8819399280832540341}
@@ -5983,7 +5984,24 @@ CapsuleCollider:
   m_Radius: 0.39
   m_Height: 1.6431706
   m_Direction: 1
-  m_Center: {x: 0, y: 0.7915853, z: -0.06974779}
+  m_Center: {x: 0, y: 0.85, z: -0.06974779}
+--- !u!114 &2255294613556991026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8819399281915773919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6369c1be9bcc5b441bd1af01e919d0d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patrolGroup: {fileID: 0}
+  patrolSpeed: 0
+  alertDistance: 0
+  coverPoint: {fileID: 0}
+  bloodPrefab: {fileID: 1000012909287652, guid: 91c37d41547e68a41bb7f1053e33fd7c, type: 3}
 --- !u!1 &8819399281982139731
 GameObject:
   m_ObjectHideFlags: 0

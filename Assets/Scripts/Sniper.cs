@@ -18,7 +18,7 @@ public class Sniper : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         action = player.GetComponent<PlayerActions>();
-        bulletsCount = 13;
+        bulletsCount = 130;
     }
 
     void Update()
@@ -49,13 +49,16 @@ public class Sniper : MonoBehaviour
                     }
                     else
                     {
-                        // 레이가 충돌하지 않을 경우, 적절한 거리로 설정
+                        //레이가 충돌하지 않을 경우, 적절한 거리로 설정
                         targetPosition = ray.GetPoint(1000);
                     }
                     action.ChangeState(PlayerState.ATTACK);
                     muzzle.SetActive(true);
                     var firedBullet = Instantiate(bulletPrefabs, muzzle.transform.position, Quaternion.identity);
                     Vector3 direction = (targetPosition - muzzle.transform.position).normalized;
+
+                    //(총알이 틀어져 있어서)진행 방향으로 회전값을 적용
+                    firedBullet.transform.rotation = Quaternion.LookRotation(-direction);                    
                     firedBullet.GetComponent<Rigidbody>().AddForce(direction * 100, ForceMode.Impulse);
 
                     GunCoolDown = 1.5f;

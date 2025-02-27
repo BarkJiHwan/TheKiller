@@ -5,8 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - CinemachineTarget
-  - NPC
   - NPCHead
+  - Bullet
+  - NPCBody
   layers:
   - Default
   - TransparentFX

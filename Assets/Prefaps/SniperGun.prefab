@@ -98,15 +98,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shoot_sound: {fileID: 0}
-  gunPrecision_notAiming: 200
-  gunPrecision_aiming: 100
-  gunPrecision: 0
-  expandValues_crosshair: {x: 0, y: 0}
-  recoilAmount_z: 0.5
-  recoilAmount_x: 0.5
-  recoilAmount_y: 0.5
   bulletPrefabs: {fileID: 4440924034055739044, guid: 43e328bae3536a84eaca0891841b6f1d, type: 3}
   muzzle: {fileID: 3091559992612071462}
+  target: {fileID: 0}
 --- !u!1 &3091559992612071462
 GameObject:
   m_ObjectHideFlags: 0

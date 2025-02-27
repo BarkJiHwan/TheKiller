@@ -1163,7 +1163,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8822881793841417891}
   - component: {fileID: 531323033779731496}
-  - component: {fileID: 7639365371163393517}
+  - component: {fileID: 5298235414399497976}
   m_Layer: 0
   m_Name: SK_Military_Head1
   m_TagString: NPCHead
@@ -1247,8 +1247,8 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.30696458, y: -0.07000545, z: 0.0001245439}
     m_Extent: {x: 0.18225129, y: 0.157433, z: 0.110385984}
   m_DirtyAABB: 0
---- !u!136 &7639365371163393517
-CapsuleCollider:
+--- !u!135 &5298235414399497976
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1265,10 +1265,8 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.12
-  m_Height: 0.35
-  m_Direction: 1
+  serializedVersion: 3
+  m_Radius: 0.20569164
   m_Center: {x: 0.00012458376, y: 1.7146009, z: -0.016486894}
 --- !u!1 &2604583274944154257
 GameObject:
@@ -2902,9 +2900,10 @@ GameObject:
   - component: {fileID: 833934142180004780}
   - component: {fileID: 3968678209148357543}
   - component: {fileID: 8257291704199080620}
+  - component: {fileID: -778025201192555184}
   m_Layer: 0
   m_Name: NPC4
-  m_TagString: NPC
+  m_TagString: NPCBody
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3007,7 +3006,24 @@ CapsuleCollider:
   m_Radius: 0.39
   m_Height: 1.6431706
   m_Direction: 1
-  m_Center: {x: 0, y: 0.7915853, z: -0.06974779}
+  m_Center: {x: 0, y: 0.82, z: -0.06974779}
+--- !u!114 &-778025201192555184
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6213075050325087084}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6369c1be9bcc5b441bd1af01e919d0d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patrolGroup: {fileID: 0}
+  patrolSpeed: 0
+  alertDistance: 0
+  coverPoint: {fileID: 0}
+  bloodPrefab: {fileID: 0}
 --- !u!1 &6228531905828334501
 GameObject:
   m_ObjectHideFlags: 0

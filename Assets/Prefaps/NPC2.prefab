@@ -1157,9 +1157,10 @@ GameObject:
   - component: {fileID: 8206187684590314619}
   - component: {fileID: -959240099891703269}
   - component: {fileID: -1169199356298355100}
+  - component: {fileID: 8104131401245521034}
   m_Layer: 0
   m_Name: NPC2
-  m_TagString: NPC
+  m_TagString: NPCBody
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1262,7 +1263,24 @@ CapsuleCollider:
   m_Radius: 0.39
   m_Height: 1.6431706
   m_Direction: 1
-  m_Center: {x: 0, y: 0.7915853, z: -0.06974779}
+  m_Center: {x: 0, y: 0.82, z: -0.06974779}
+--- !u!114 &8104131401245521034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3191293194562004155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6369c1be9bcc5b441bd1af01e919d0d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patrolGroup: {fileID: 0}
+  patrolSpeed: 0
+  alertDistance: 0
+  coverPoint: {fileID: 0}
+  bloodPrefab: {fileID: 0}
 --- !u!1 &3294486834625164949
 GameObject:
   m_ObjectHideFlags: 0
@@ -2830,10 +2848,10 @@ GameObject:
   m_Component:
   - component: {fileID: 469119609125236}
   - component: {fileID: 9020470275999337471}
-  - component: {fileID: 1801741027351165581}
+  - component: {fileID: 398804963420460019}
   m_Layer: 0
   m_Name: SK_Military_Head1
-  m_TagString: Untagged
+  m_TagString: NPCHead
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2914,8 +2932,8 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.30696458, y: -0.07000545, z: 0.0001245439}
     m_Extent: {x: 0.18225129, y: 0.157433, z: 0.110385984}
   m_DirtyAABB: 0
---- !u!136 &1801741027351165581
-CapsuleCollider:
+--- !u!135 &398804963420460019
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -2932,10 +2950,8 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.12
-  m_Height: 0.35
-  m_Direction: 1
+  serializedVersion: 3
+  m_Radius: 0.20569164
   m_Center: {x: 0.00012458376, y: 1.7146009, z: -0.016486894}
 --- !u!1 &6412843527423565330
 GameObject:
