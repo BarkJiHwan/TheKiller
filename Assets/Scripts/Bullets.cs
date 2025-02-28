@@ -39,7 +39,6 @@ public class Bullets : MonoBehaviour
         if (npc != null)
         {            
             npc.RayHit(hit.point, hit.normal);
-
             //총알이 앞으로 나아가면서 업데이트를 돌면서 계속 호출을 하기 때문에
             //최적화면에서 bool변수에 담아서 사용
             //코드의 가독성도 챙길 수 있다.
@@ -49,7 +48,6 @@ public class Bullets : MonoBehaviour
                 hit.collider.transform.parent.CompareTag("NPCBody");
             //hit.collider.CompareTag("NPCBody") ||
             //hit.collider.transform.parent.CompareTag("NPCBody")//기존코드
-
             if (isHeadShot)
             {
                 npc.HeadShot();

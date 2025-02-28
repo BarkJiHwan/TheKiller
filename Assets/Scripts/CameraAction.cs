@@ -10,9 +10,7 @@ public class CameraAction : MonoBehaviour
     public CinemachineVirtualCamera cam;
     public CinemachineVirtualCamera zoomInCam;    
     public PlayerMove player;
-    [SerializeField] public float turnSpeed = 1f;    
-    private float rotationSmoothTime = 0.1f;  // 부드러움 시간
-    private float currentRotationVelocity;  // 현재 회전 속도
+    [SerializeField] public float turnSpeed = 1f;
 
     private float vFov;
     private float targetFOV; // 목표 FOV 값
@@ -42,7 +40,6 @@ public class CameraAction : MonoBehaviour
         zoomInCamComposer = zoomInCam.GetCinemachineComponent<CinemachineComposer>();
         zoomInCamTr = zoomInCam.GetCinemachineComponent<CinemachineTransposer>();
     }
-
     void Update()
     {
         float rX = Input.GetAxis("Mouse X");
