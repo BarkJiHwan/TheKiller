@@ -12,11 +12,11 @@ public class NPCCoverState : IState
     public NPCCoverState(NPCActions npc)
     {
         this.npc = npc;
-        this.coverPoint = npc.GetCoverPoint();
     }
 
     public void Enter()
     {
+        coverPoint = npc.GetCoverPoint();
         coverRunSpeed = npc.GetComponent<NPCController>().runSpeed;
         // 커버 애니메이션 시작
         npc.animator.SetBool("InCover", true);

@@ -6,7 +6,7 @@ using UnityEngine;
 public class NPCController : MonoBehaviour
 {
     [Header("패트롤 설정")]
-    public Transform patrolGroup;
+    public PatrolGroup patrolGroup;
     public float patrolSpeed = 3;
     public float rotationSpeed = 3;
     public float runSpeed = 5f;
@@ -30,42 +30,7 @@ public class NPCController : MonoBehaviour
 
     private void InitializePatrolPoints()
     {
-        if (patrolGroup != null)
-        {
-            int childCount = patrolGroup.childCount;
-            patrolPoints = new PatrolPoint[childCount];
-            for (int i = 0; i < childCount; i++)
-            {
-                PatrolPoint patrolPoint = patrolGroup.GetChild(i).GetComponent<PatrolPoint>();
-                if (patrolPoint != null)
-                {
-                    patrolPoints[i] = patrolPoint;            
-                }
-                else
-                {
-                    Debug.LogWarning("PatrolPoint component not found on child object " + i);
-                }
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Patrol group is not assigned.");
-            patrolPoints = new PatrolPoint[0]; // 빈 배열로 초기화
-        }
-        if (patrolGroup != null)
-        {
-            int childCount = patrolGroup.childCount;
-            patrolPoints = new PatrolPoint[childCount];
-            for (int i = 0; i < childCount; i++)
-            {
-                patrolPoints[i] = patrolGroup.GetChild(i).GetComponent<PatrolPoint>();
-            }
-        }
-        else
-        {
-            Debug.LogWarning("Patrol group is not assigned.");
-            patrolPoints = new PatrolPoint[0]; // 빈 배열로 초기화
-        }
+        patrolPoints = patrolGroup.GetPatrolPoints();        
     }
 
     private void InitializeNPCActions()
@@ -74,10 +39,11 @@ public class NPCController : MonoBehaviour
         if (npcActions != null)
         {
             npcActions.Initialize(patrolPoints, coverPoint, patrolSpeed, alertDistance, areaMinBounds, areaMaxBounds);
+            Debug.Log("NPC Actions initialized.");
         }
         else
         {
-            Debug.LogError("NPCActions component is not assigned.");
+            Debug.LogError("NPCActions 컴포넌트가 할당되지 않았습니다.");
         }
     }
 

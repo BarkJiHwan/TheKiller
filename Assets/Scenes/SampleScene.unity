@@ -14627,10 +14627,10 @@ PrefabInstance:
     - target: {fileID: 2255294613556991026, guid: f269b47f315e0284f8824a9e948a3f60, type: 3}
       propertyPath: patrolGroup
       value: 
-      objectReference: {fileID: 1309833180}
+      objectReference: {fileID: 1309833181}
     - target: {fileID: 2255294613556991026, guid: f269b47f315e0284f8824a9e948a3f60, type: 3}
       propertyPath: patrolSpeed
-      value: 3
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2255294613556991026, guid: f269b47f315e0284f8824a9e948a3f60, type: 3}
       propertyPath: alertDistance
@@ -27919,11 +27919,6 @@ Transform:
 --- !u!1 &1309833179 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 427974688395687328, guid: f9fc6e11113195c4d8b70a85831b0392, type: 3}
-  m_PrefabInstance: {fileID: 902640818075561907}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &1309833180 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1191885434800360489, guid: f9fc6e11113195c4d8b70a85831b0392, type: 3}
   m_PrefabInstance: {fileID: 902640818075561907}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1309833181
@@ -44112,7 +44107,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!64 &2112917823
 MeshCollider:
   m_ObjectHideFlags: 0

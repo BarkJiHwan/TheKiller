@@ -24,13 +24,11 @@ public class NPCIdleState : IState
     public void Update()
     {
         idleTimer += Time.deltaTime;
-        Debug.Log(idleTimer);
-        Debug.Log(idleDuration);
-        if (idleTimer >= idleDuration)
-        {            
+        //if (idleTimer >= idleDuration)
+        //{            
             // 일정 시간 대기 후 다음 상태로 전환
             npc.ChangeState(NPCState.PATROL);
-        }
+        //}
     }
 
     public void Exit()

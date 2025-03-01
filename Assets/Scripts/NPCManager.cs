@@ -80,7 +80,7 @@ public class NPCManager : MonoBehaviour
             NPCController npcController = npc.GetComponent<NPCController>();
             if (npcController != null)
             {
-                npcController.patrolGroup = patrolGroup.transform; // 모든 NPC에게 패트롤 그룹 할당
+                //npcController.patrolGroup = patrolGroup.transform; // 모든 NPC에게 패트롤 그룹 할당
             }
         }
     }

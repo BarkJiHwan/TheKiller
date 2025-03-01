@@ -15,6 +15,7 @@ public class NPCAlertState : IState
     {
         // 경고 애니메이션 시작
         npc.animator.SetBool("Alert", true);
+        npc.animator.SetBool("Walk", false);
         alertTimer = 0f;
         // 추가 처리 (예: 경고 사운드 재생, 주변 객체 탐색 등)
     }

@@ -42,9 +42,12 @@ public class NPCActions : MonoBehaviour
         };
         // 초기 상태 설정
         ChangeState(NPCState.IDLE);
+        if (currentState == null)
+        {
+            Debug.LogError("초기화 안됨");
+        }
     }
-
-    void Update()
+        void Update()
     {
         currentState.Update();
     }
@@ -57,19 +60,22 @@ public class NPCActions : MonoBehaviour
         }
         if (states.ContainsKey(newState))
         {
-
-            currentState = states[newState];
-        Debug.Log("State changed to: " + newState);
-        currentState.Enter(); 
+            currentState = states[newState];            
+            currentState.Enter();
         }
         else
         {
-            Debug.LogError("State not found in dictionary: " + newState);
+            Debug.LogError("딕셔너리에 안담김: " + newState);
+        }
+        if (currentState == null)
+        {
+            Debug.LogError("커런트 오류 " + newState);
+
         }
     }
 
     public void Initialize(PatrolPoint[] patrolPoints, Transform coverPoint, float patrolSpeed, float alertDistance, Vector3 areaMinBounds, Vector3 areaMaxBounds)
-    {
+    {        
         this.patrolPoints = patrolPoints;
         this.coverPoint = coverPoint;
         this.patrolSpeed = patrolSpeed;
