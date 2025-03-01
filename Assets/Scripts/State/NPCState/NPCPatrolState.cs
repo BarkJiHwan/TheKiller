@@ -44,8 +44,8 @@ public class NPCPatrolState : IState
         npc.transform.rotation = Quaternion.Slerp(npc.transform.rotation, lookRotation, Time.deltaTime * npc.rotationSpeed);
         npc.transform.position = Vector3.MoveTowards(npc.transform.position, targetPoint.transform.position, npc.PatrolSpeed * Time.deltaTime);
 
-        if (targetPoint.IsNPCInRange())
-        {            
+        if (targetPoint.IsNPCInRange(this.npc))
+        {
             MoveToNextPatrolPoint();
         }
         //else
@@ -72,8 +72,7 @@ public class NPCPatrolState : IState
     private void RandomActions()
     {
         int random = Random.Range(0, 3);
-        npc.animator.SetBool("Walk", false);
-        Debug.Log("상태" + random);
+        npc.animator.SetBool("Walk", false);        
         if (random == 0)
         {
             npc.ChangeState(NPCState.IDLE); // 상태 1

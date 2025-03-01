@@ -6,21 +6,24 @@ using UnityEngine.AI;
 public class NPCManager : MonoBehaviour
 {
     [Header("NPC 풀 설정")]
-    public int poolSize = 10;
+    public int poolSize = 1;
 
     [Header("스폰 설정")]
     public Transform[] spawnPoints;
     public Transform coverPoint; // 커버 포인트
 
     [Header("NPC 행동 설정")]
-    public float patrolSpeed = 3.5f;
-    public float alertDistance = 5f;
+    public float patrolSpeed;
+    public float alertDistance;
 
     [Header("스테이지 설정")]
     public int stage = 1;
 
     [Header("영역 경계 설정")]
     public Transform panelTransform;
+
+    [Header("애니메이션 설정")]
+    public RuntimeAnimatorController animatorController;    
 
     private List<NPCActions> npcList = new List<NPCActions>();
     private Vector3 areaMinBounds;
@@ -33,7 +36,6 @@ public class NPCManager : MonoBehaviour
         if (patrolGroup != null)
         {
             InitializeNPCs(patrolGroup);
-            AssignNPCBehaviors(patrolGroup);
         }
         else
         {
@@ -61,29 +63,39 @@ public class NPCManager : MonoBehaviour
         for (int i = 0; i < poolSize; i++)
         {
             GameObject npcObj = NPCPool.Instance.GetObject();
+            npcObj.SetActive(false);
             NPCActions npc = npcObj.GetComponent<NPCActions>();
             npcList.Add(npc);
 
             Transform randomSpawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
             npcObj.transform.position = randomSpawnPoint.position;
-
-            // NPC 초기화
+            
+            //애니메이터 설정
+            Animator animator = npcObj.GetComponent<Animator>();
+            if (animator == null)
+            {
+                animator = npcObj.AddComponent<Animator>();
+            }
+            //애니메이터 컨트롤러 할당
+            animator.runtimeAnimatorController = animatorController; 
+            //첫번째 생성되는 앤피시 타겟 지정
+            npc.isTargetNPC = (i == 0);
+            //NPC 초기화
             npc.Initialize(patrolGroup.patrols, coverPoint, alertDistance, areaMinBounds, areaMaxBounds);
-            npc.ChangeState(NPCState.PATROL);
-        }
-    }
-
-    private void AssignNPCBehaviors(PatrolGroup patrolGroup)
-    {
-        foreach (var npc in npcList)
-        {
+            //랜덤한 속도 지정
+            npc.PatrolSpeed = Random.Range(2f, 5f);
+            //랜덤한 총알 탐색 범위 지정
+            npc.alertDistance = Random.Range(5f, 10f);
+            
             NPCController npcController = npc.GetComponent<NPCController>();
             if (npcController != null)
-            {
-                //npcController.patrolGroup = patrolGroup.transform; // 모든 NPC에게 패트롤 그룹 할당
+            {//패트롤 그룹과 커버포인터 지정
+                npcController.patrolGroup = patrolGroup;
+                npcController.coverPoint = coverPoint;
             }
+            npcObj.SetActive(true);
         }
-    }
+    }    
 }
 
 //    public int poolSize = 10;

@@ -1,5 +1,7 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEditor.VersionControl.Asset;
@@ -25,6 +27,13 @@ public class NPCActions : MonoBehaviour
     private float idleDuration;
     public Vector3 areaMinBounds; // 최소 경계
     public Vector3 areaMaxBounds;
+    
+    [Header("타겟 설정")]
+    public bool isTargetNPC;
+    [Header("엔피시 생존 여부 시작은 false")]
+    public bool isDead = false;
+    [Header("바디 2방 헤드 1방")]
+    public int bodyHitCount = 0;
 
     public Animator animator;
 
@@ -33,19 +42,19 @@ public class NPCActions : MonoBehaviour
     private PatrolPoint[] patrolPoints;
     private Transform coverPoint;
 
-    public float PatrolSpeed 
+    public float PatrolSpeed
     {
-        get => patrolSpeed; 
-        set => patrolSpeed = value; 
+        get => patrolSpeed;
+        set => patrolSpeed = value;
     }
-    public float IdleDuration 
-    { 
-        get => idleDuration; 
-        set => idleDuration = value; 
+    public float IdleDuration
+    {
+        get => idleDuration;
+        set => idleDuration = value;
     }
 
     void Start()
-    {
+    {        
         animator = GetComponent<Animator>();
         originalPatrolSpeed = patrolSpeed;
         states = new Dictionary<NPCState, IState>
@@ -57,15 +66,27 @@ public class NPCActions : MonoBehaviour
             { NPCState.DEATH, new NPCDeathState(this)},
             { NPCState.WANDER, new NPCWanderState(this)}
         };
-        ChangeState(NPCState.IDLE);
-        if (currentState == null)
+   
+        // 상태 초기화 확인 로그
+        foreach (var state in states)
         {
-            Debug.LogError("초기화 안됨");
+            Debug.Log($"상태 추가됨: {state.Key} = {state.Value}");
         }
+        ChangeState(NPCState.IDLE);
+       
     }
     void Update()
     {
+        if(isTargetNPC)
+        {
+            ApplySpecialEffect();
+        }
         currentState.Update();
+    }
+
+    void ApplySpecialEffect()
+    {
+
     }
 
     public void ChangeState(NPCState newState)
@@ -74,7 +95,7 @@ public class NPCActions : MonoBehaviour
         {
             currentState.Exit();
         }
-        if (states.ContainsKey(newState))
+        if (states.ContainsKey(newState)) 
         {
             currentState = states[newState];
             currentState.Enter();
@@ -113,5 +134,33 @@ public class NPCActions : MonoBehaviour
         float randomZ = Random.Range(areaMaxBounds.z, areaMaxBounds.z);
 
         return new Vector3(randomX, randomY, randomZ);
+    }
+    public void HeadShot()
+    {
+        if (isDead) return;
+
+        Die();
+    }
+
+    public void BodyShot()
+    {
+        if (isDead) return;
+
+        bodyHitCount++;
+        if (bodyHitCount >= 2)
+        {
+            Die();
+        }
+        else
+        {
+            // 기어다니는 애니메이션 또는 특수 효과 적용
+            //ChangeState(NPCState.CRAWL);
+        }
+    }
+
+    private void Die()
+    {
+        isDead = true;
+        ChangeState(NPCState.DEATH);
     }
 }

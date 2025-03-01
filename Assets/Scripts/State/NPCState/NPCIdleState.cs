@@ -13,11 +13,10 @@ public class NPCIdleState : IState
     }
 
     public void Enter()
-    {        
+    {
         npc.PatrolSpeed = 0;
         npc.IdleDuration = Random.Range(2f, 5f);  // Idle 상태에서 멈춰있는 시간
-        npc.animator.SetBool("Idle", true); // Idle 애니메이션 시작        
-        Debug.Log("들어왔습니다.");
+        npc.animator.SetBool("Idle", true); // Idle 애니메이션 시작                
     }
 
     public void Update()

@@ -230,7 +230,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8761a04a7074a534b838a7b69362dc1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 100
+  spinSpeed: 1000
+  bulletImpactPrefab: {fileID: 100014, guid: 0412242db716836419982ce004514b9f, type: 3}
 --- !u!64 &2338040685578352999
 MeshCollider:
   m_ObjectHideFlags: 0

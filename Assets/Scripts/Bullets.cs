@@ -6,24 +6,20 @@ using UnityEngine;
 public class Bullets : MonoBehaviour
 {
     public float spinSpeed = 1000f;
-    private bool hasHit = false;
-    private bool isHeadShot;
-    private bool isBodyShot;
+    public GameObject bulletImpactPrefab;      
 
-    void Start()
+    private void Start()
     {
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.useGravity = false;
     }
     private void Update()
     {
-        transform.Rotate(0, 0, spinSpeed * Time.deltaTime);
-        if (!hasHit)
-        {            
-            ShootRaycast();
-        }
+        transform.Rotate(0, 0, spinSpeed * Time.deltaTime);                  
+        ShootRaycast();
     }
-    void ShootRaycast()
+
+    private void ShootRaycast()
     {
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
@@ -32,35 +28,47 @@ public class Bullets : MonoBehaviour
             OnBulletHit(hit);
         }
     }
-    void OnBulletHit(RaycastHit hit)
+    private void OnBulletHit(RaycastHit hit)
     {
         NPCController npc = hit.collider.GetComponentInParent<NPCController>();
         
         if (npc != null)
         {            
-            npc.RayHit(hit.point, hit.normal);
-            //총알이 앞으로 나아가면서 업데이트를 돌면서 계속 호출을 하기 때문에
-            //최적화면에서 bool변수에 담아서 사용
-            //코드의 가독성도 챙길 수 있다.
-            isHeadShot = hit.collider.CompareTag("NPCHead");
-            //hit.collider.CompareTag("NPCHead") //기존코드
-            isBodyShot = hit.collider.CompareTag("NPCBody") || 
-                hit.collider.transform.parent.CompareTag("NPCBody");
-            //hit.collider.CompareTag("NPCBody") ||
-            //hit.collider.transform.parent.CompareTag("NPCBody")//기존코드
-            if (isHeadShot)
-            {
-                npc.HeadShot();
-            }
-            else if (isBodyShot)
-            {
-                npc.BodyShot();
-            }
-            hasHit = true;
+            npc.RayHit(hit.point, hit.normal, hit.collider.tag);                        
         }
         else
         {
-            Debug.LogWarning("NPCController를 찾을 수 없습니다.");
+            // NPC가 아닌 오브젝트에 충돌 시 파티클 시스템 생성
+            CreateBulletImpact(hit.point, hit.normal);
         }
+    }
+
+    private void CreateBulletImpact(Vector3 position, Vector3 normal)
+    {
+        if(bulletImpactPrefab != null)
+        {
+            Quaternion rotation = Quaternion.LookRotation(normal);
+            GameObject impact = Instantiate(bulletImpactPrefab, position, rotation);
+
+            // 파티클 시스템이 완료되면 오브젝트 파괴
+            StartCoroutine(DestroyImpactPrefab(impact));
+        }
+        else
+        {
+            Debug.LogWarning("bulletImpactPrefab껴야됨");
+        }
+    }
+
+    IEnumerator DestroyImpactPrefab(GameObject impact)
+    {
+        ParticleSystem particleSystem = impact.GetComponent<ParticleSystem>();
+        if (particleSystem != null)
+        {
+            while (!particleSystem.isPlaying)
+            {
+                yield return null;
+            }
+        }
+        Destroy(impact);
     }
 }
