@@ -9,20 +9,16 @@ public class NPCPatrolState : IState
     private PatrolPoint[] patrolPoints;
     private int currentPointIndex = 0;
     private PatrolPoint targetPoint;
-    private float patrolSpeed;
-    private float rotationSpeed;
 
     public NPCPatrolState(NPCActions npc)
     {
         this.npc = npc;
-        //patrolPoints = npc.GetPatrolPoints();
-       }
+    }
     public void Enter()
     {        
-        patrolPoints = npc.GetPatrolPoints();
-        patrolSpeed = npc.GetPatrolSpeed();
-        rotationSpeed = npc.GetComponent<NPCController>().rotationSpeed;
+        patrolPoints = npc.GetPatrolPoints();       
         npc.animator.SetFloat("Speed", 2);
+        npc.animator.SetBool("Patrol", true);
         npc.animator.SetBool("Walk", true);
         targetPoint = patrolPoints[currentPointIndex];
     }
@@ -44,8 +40,8 @@ public class NPCPatrolState : IState
         
         Vector3 direction = (targetPoint.transform.position - npc.transform.position).normalized;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-        npc.transform.rotation = Quaternion.Slerp(npc.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
-        npc.transform.position = Vector3.MoveTowards(npc.transform.position, targetPoint.transform.position, patrolSpeed * Time.deltaTime);
+        npc.transform.rotation = Quaternion.Slerp(npc.transform.rotation, lookRotation, Time.deltaTime * npc.rotationSpeed);
+        npc.transform.position = Vector3.MoveTowards(npc.transform.position, targetPoint.transform.position, npc.PatrolSpeed * Time.deltaTime);
 
         if (targetPoint.IsNPCInRange())
         {            
@@ -74,9 +70,8 @@ public class NPCPatrolState : IState
     }
     private void RandomActions()
     {
-        int random = Random.Range(0, 5);
+        int random = Random.Range(0, 1);
         Debug.Log("상태" + random);
-
         if (random == 0)
         {
             npc.ChangeState(NPCState.IDLE); // 상태 1
@@ -84,6 +79,7 @@ public class NPCPatrolState : IState
         else if (random == 1)
         {
             npc.ChangeState(NPCState.ALERT); // 상태 2
+
         }
         else if (random == 2)
         {

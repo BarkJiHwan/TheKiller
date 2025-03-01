@@ -16,17 +16,27 @@ public enum NPCState
 }
 public class NPCActions : MonoBehaviour
 {
+    [Header("NPC 설정")]
+    [SerializeField] private float patrolSpeed = 3f; // 기본 패트롤 속도
+    public float rotationSpeed = 3f; // 회전 속도
+    public float runSpeed = 5f; // 달리기 속도
+    public float alertDistance; // 경고 거리
+    public Vector3 areaMinBounds; // 최소 경계
+    public Vector3 areaMaxBounds;
+
     public Animator animator;
+
     private IState currentState;
     private Dictionary<NPCState, IState> states;
     private PatrolPoint[] patrolPoints;
     private Transform coverPoint;
-    private float patrolSpeed;
-    private float alertDistance;
     private bool isAlert;
 
-    public Vector3 areaMinBounds;
-    public Vector3 areaMaxBounds;
+    public float PatrolSpeed 
+    {
+        get => patrolSpeed; 
+        set => patrolSpeed = value; 
+    }
 
     void Start()
     {
@@ -40,14 +50,13 @@ public class NPCActions : MonoBehaviour
             { NPCState.DEATH, new NPCDeathState(this)},
             { NPCState.WANDER, new NPCWanderState(this)}
         };
-        // 초기 상태 설정
         ChangeState(NPCState.IDLE);
         if (currentState == null)
         {
             Debug.LogError("초기화 안됨");
         }
     }
-        void Update()
+    void Update()
     {
         currentState.Update();
     }
@@ -60,7 +69,7 @@ public class NPCActions : MonoBehaviour
         }
         if (states.ContainsKey(newState))
         {
-            currentState = states[newState];            
+            currentState = states[newState];
             currentState.Enter();
         }
         else
@@ -74,21 +83,23 @@ public class NPCActions : MonoBehaviour
         }
     }
 
-    public void Initialize(PatrolPoint[] patrolPoints, Transform coverPoint, float patrolSpeed, float alertDistance, Vector3 areaMinBounds, Vector3 areaMaxBounds)
-    {        
+    public void Initialize(PatrolPoint[] patrolPoints, Transform coverPoint, float alertDistance, Vector3 areaMinBounds, Vector3 areaMaxBounds)
+    {
+        if (patrolPoints == null)
+        {
+            Debug.LogError("초기화 단계에서 patrolPoints 배열이 null");
+        }
         this.patrolPoints = patrolPoints;
         this.coverPoint = coverPoint;
-        this.patrolSpeed = patrolSpeed;
         this.alertDistance = alertDistance;
         this.areaMinBounds = areaMinBounds;
         this.areaMaxBounds = areaMaxBounds;
     }
-
     public PatrolPoint[] GetPatrolPoints() => patrolPoints;
-    public Transform GetCoverPoint() => coverPoint;
-    public float GetPatrolSpeed() => patrolSpeed;
+    public Transform GetCoverPoint() => coverPoint;    
     public float GetAlertDistance() => alertDistance;
     public bool IsAlert() => isAlert;
+
     public void SetAlert(bool alert) => isAlert = alert;
 
     public Vector3 GetRandomPositionWithinArea(Vector3 areaMinBounds, Vector3 areaMaxBounds)
@@ -99,81 +110,4 @@ public class NPCActions : MonoBehaviour
 
         return new Vector3(randomX, randomY, randomZ);
     }
-    //private PatrolPoint[] patrolPoints;
-    //private Transform coverPoint;
-    //private float patrolSpeed;
-    //private float alertDistance;
-    //private bool isAlert;
-    //private NPCState currentState;
-    //private Dictionary<NPCState, IState> stateDictionary;
-
-    //public Vector3 areaMinBounds;
-    //public Vector3 areaMaxBounds;
-
-    //protected override void InitializeStates()
-    //{
-    //    stateDictionary = new Dictionary<NPCState, IState>();
-    //    RegisterState(NPCState.IDLE, new NPCIdleState(this));
-    //    RegisterState(NPCState.PATROL, new NPCPatrolState(this));
-    //    RegisterState(NPCState.ALERT, new NPCAlertState(this));
-    //    RegisterState(NPCState.COVER, new NPCCoverState(this));
-    //    RegisterState(NPCState.DEATH, new NPCDeathState(this));
-    //    RegisterState(NPCState.WANDER, new NPCWanderState(this));
-
-    //    currentState = NPCState.IDLE;
-    //}
-
-    //public void Initialize(PatrolPoint[] patrolPoints, Transform coverPoint, float patrolSpeed, float alertDistance, Vector3 areaMinBounds, Vector3 areaMaxBounds)
-    //{
-    //    this.patrolPoints = patrolPoints;
-    //    this.coverPoint = coverPoint;
-    //    this.patrolSpeed = patrolSpeed;
-    //    this.alertDistance = alertDistance;
-    //    this.areaMinBounds = areaMinBounds;
-    //    this.areaMaxBounds = areaMaxBounds;
-    //    ChangeState(NPCState.IDLE);
-    //}
-
-    //public void ChangeState(NPCState newState)
-    //{
-    //    if (stateDictionary.ContainsKey(currentState))
-    //    {
-    //        stateDictionary[currentState].Exit();
-    //    }
-
-    //    currentState = newState;
-
-    //    if (stateDictionary.ContainsKey(currentState))
-    //    {
-    //        stateDictionary[currentState].Enter();
-    //    }
-    //    else
-    //    {
-    //        Debug.LogError("State not found: " + currentState);
-    //    }
-    //}
-
-    //public PatrolPoint[] GetPatrolPoints() => patrolPoints;
-    //public Transform GetCoverPoint() => coverPoint;
-    //public float GetPatrolSpeed() => patrolSpeed;
-    //public float GetAlertDistance() => alertDistance;
-    //public bool IsAlert() => isAlert;
-    //public void SetAlert(bool alert) => isAlert = alert;
-    //public NPCState GetCurrentState() => currentState;
-    //public void SetCurrentState(NPCState state) => currentState = state;
-
-    //public Vector3 GetRandomPositionWithinArea(Vector3 areaMinBounds, Vector3 areaMaxBounds)
-    //{
-    //    float randomX = Random.Range(areaMinBounds.x, areaMaxBounds.x);
-    //    float randomY = Random.Range(areaMinBounds.y, areaMaxBounds.y);
-    //    float randomZ = Random.Range(areaMinBounds.z, areaMaxBounds.z);
-
-    //    return new Vector3(randomX, randomY, randomZ);
-    //}
-    //private void RegisterState(NPCState stateKey, IState state)
-    //{
-    //    stateDictionary[stateKey] = state;
-    //    Debug.Log("State registered: " + stateKey);
-
-    //}
 }
