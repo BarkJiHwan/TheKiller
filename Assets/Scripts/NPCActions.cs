@@ -18,9 +18,11 @@ public class NPCActions : MonoBehaviour
 {
     [Header("NPC 설정")]
     [SerializeField] private float patrolSpeed = 3f; // 기본 패트롤 속도
+    public float originalPatrolSpeed;
     public float rotationSpeed = 3f; // 회전 속도
     public float runSpeed = 5f; // 달리기 속도
     public float alertDistance; // 경고 거리
+    private float idleDuration;
     public Vector3 areaMinBounds; // 최소 경계
     public Vector3 areaMaxBounds;
 
@@ -30,17 +32,22 @@ public class NPCActions : MonoBehaviour
     private Dictionary<NPCState, IState> states;
     private PatrolPoint[] patrolPoints;
     private Transform coverPoint;
-    private bool isAlert;
 
     public float PatrolSpeed 
     {
         get => patrolSpeed; 
         set => patrolSpeed = value; 
     }
+    public float IdleDuration 
+    { 
+        get => idleDuration; 
+        set => idleDuration = value; 
+    }
 
     void Start()
     {
         animator = GetComponent<Animator>();
+        originalPatrolSpeed = patrolSpeed;
         states = new Dictionary<NPCState, IState>
         {
             { NPCState.IDLE, new NPCIdleState(this)},
@@ -98,9 +105,6 @@ public class NPCActions : MonoBehaviour
     public PatrolPoint[] GetPatrolPoints() => patrolPoints;
     public Transform GetCoverPoint() => coverPoint;    
     public float GetAlertDistance() => alertDistance;
-    public bool IsAlert() => isAlert;
-
-    public void SetAlert(bool alert) => isAlert = alert;
 
     public Vector3 GetRandomPositionWithinArea(Vector3 areaMinBounds, Vector3 areaMaxBounds)
     {

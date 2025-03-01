@@ -15,8 +15,9 @@ public class NPCPatrolState : IState
         this.npc = npc;
     }
     public void Enter()
-    {        
-        patrolPoints = npc.GetPatrolPoints();       
+    {
+        npc.PatrolSpeed = npc.originalPatrolSpeed;
+        patrolPoints = npc.GetPatrolPoints();
         npc.animator.SetFloat("Speed", 2);
         npc.animator.SetBool("Patrol", true);
         npc.animator.SetBool("Walk", true);
@@ -70,7 +71,8 @@ public class NPCPatrolState : IState
     }
     private void RandomActions()
     {
-        int random = Random.Range(0, 1);
+        int random = Random.Range(0, 3);
+        npc.animator.SetBool("Walk", false);
         Debug.Log("ป๓ลย" + random);
         if (random == 0)
         {
@@ -93,7 +95,8 @@ public class NPCPatrolState : IState
         {
             if (hitCol.CompareTag("Bullet"))
             {
-                npc.SetAlert(true);
+                npc.PatrolSpeed = 0;
+                npc.animator.SetBool("Patrol", false);
                 npc.ChangeState(NPCState.ALERT);
                 break;
             }
