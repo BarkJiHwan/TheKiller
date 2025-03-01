@@ -37,6 +37,6 @@ public class NPCWanderState : IState
     private void MoveToRandomPositionWithinArea()
     {
         Vector3 randomPosition = npc.GetRandomPositionWithinArea(areaMinBounds, areaMaxBounds);
-        npc.transform.position = Vector3.MoveTowards(npc.transform.position, randomPosition, npc.GetPatrolSpeed() * Time.deltaTime);
+        npc.transform.position = Vector3.MoveTowards(npc.transform.position, randomPosition, npc.PatrolSpeed * Time.deltaTime);
     }
 }

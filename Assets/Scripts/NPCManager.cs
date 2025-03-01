@@ -68,7 +68,7 @@ public class NPCManager : MonoBehaviour
             npcObj.transform.position = randomSpawnPoint.position;
 
             // NPC √ ±‚»≠
-            npc.Initialize(patrolGroup.patrols, coverPoint, patrolSpeed, alertDistance, areaMinBounds, areaMaxBounds);
+            npc.Initialize(patrolGroup.patrols, coverPoint, alertDistance, areaMinBounds, areaMaxBounds);
             npc.ChangeState(NPCState.PATROL);
         }
     }

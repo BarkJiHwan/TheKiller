@@ -7,9 +7,6 @@ public class NPCController : MonoBehaviour
 {
     [Header("패트롤 설정")]
     public PatrolGroup patrolGroup;
-    public float patrolSpeed = 3;
-    public float rotationSpeed = 3;
-    public float runSpeed = 5f;
     public float alertDistance;
 
     [Header("커버 설정")]
@@ -38,7 +35,7 @@ public class NPCController : MonoBehaviour
         npcActions = GetComponent<NPCActions>();
         if (npcActions != null)
         {
-            npcActions.Initialize(patrolPoints, coverPoint, patrolSpeed, alertDistance, areaMinBounds, areaMaxBounds);
+            npcActions.Initialize(patrolPoints, coverPoint, alertDistance, areaMinBounds, areaMaxBounds);
             Debug.Log("NPC Actions initialized.");
         }
         else
