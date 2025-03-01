@@ -2426,8 +2426,8 @@ GameObject:
   - component: {fileID: 4692684994304406507}
   - component: {fileID: 1729356930380212625}
   - component: {fileID: 6707341636296235967}
-  - component: {fileID: -3116163507062069444}
   - component: {fileID: 3849518897935599603}
+  - component: {fileID: -3116163507062069444}
   - component: {fileID: 2558907979740596356}
   m_Layer: 6
   m_Name: NPC5
@@ -2477,7 +2477,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 070ad16fa8471b342b0cef7952094903, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -2512,27 +2512,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!114 &-3116163507062069444
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5355928461982673233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6369c1be9bcc5b441bd1af01e919d0d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  patrolGroup: {fileID: 0}
-  patrolSpeed: 3
-  rotationSpeed: 3
-  runSpeed: 5
-  alertDistance: 0
-  coverPoint: {fileID: 0}
-  bloodPrefab: {fileID: 1000012909287652, guid: 91c37d41547e68a41bb7f1053e33fd7c, type: 3}
-  areaMinBounds: {x: 0, y: 0, z: 0}
-  areaMaxBounds: {x: 0, y: 0, z: 0}
 --- !u!136 &3849518897935599603
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2556,6 +2535,24 @@ CapsuleCollider:
   m_Height: 1.5290194
   m_Direction: 1
   m_Center: {x: 0, y: 0.7545097, z: -0.03999999}
+--- !u!114 &-3116163507062069444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5355928461982673233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6369c1be9bcc5b441bd1af01e919d0d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patrolGroup: {fileID: 0}
+  alertDistance: 0
+  coverPoint: {fileID: 0}
+  bloodPrefab: {fileID: 1000012909287652, guid: 91c37d41547e68a41bb7f1053e33fd7c, type: 3}
+  areaMinBounds: {x: 0, y: 0, z: 0}
+  areaMaxBounds: {x: 0, y: 0, z: 0}
 --- !u!114 &2558907979740596356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2568,9 +2565,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6bb1527a726f6c42ba33bdc0bf9c5a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 1729356930380212625}
+  patrolSpeed: 3
+  originalPatrolSpeed: 0
+  rotationSpeed: 3
+  runSpeed: 5
+  alertDistance: 0
   areaMinBounds: {x: 0, y: 0, z: 0}
   areaMaxBounds: {x: 0, y: 0, z: 0}
+  animator: {fileID: 0}
 --- !u!1 &5450915333300059007
 GameObject:
   m_ObjectHideFlags: 0

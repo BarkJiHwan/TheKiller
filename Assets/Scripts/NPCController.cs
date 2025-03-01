@@ -49,22 +49,18 @@ public class NPCController : MonoBehaviour
         return patrolPoints;
     }
 
-    public void RayHit(Vector3 hitPos, Vector3 hitNormal)
+    public void RayHit(Vector3 hitPos, Vector3 hitNormal, string hitPoint)
     {
         Quaternion rot = Quaternion.LookRotation(hitNormal);
         GameObject blood = Instantiate(bloodPrefab, hitPos, rot);
         blood.transform.parent = transform;
-    }
-
-    public void HeadShot()
-    {
-        // 데스 애니메이션
-        Debug.Log("Head shot!");
-    }
-
-    public void BodyShot()
-    {
-        // 기어다니는 애니메이션
-        Debug.Log("Body shot!");
-    }
+        if(hitPoint == "NPCHead")
+        {
+            npcActions.HeadShot();
+        }
+        else if(hitPoint == "NPCBody")
+        {
+            npcActions.BodyShot();
+        }        
+    }   
 }

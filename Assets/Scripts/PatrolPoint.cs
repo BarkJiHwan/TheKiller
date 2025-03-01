@@ -12,12 +12,12 @@ public class PatrolPoint : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
-    public bool IsNPCInRange()
+    public bool IsNPCInRange(NPCActions npc)
     {
-        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, npcLayer);
+        Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, npcLayer);        
         foreach (Collider hitCol in hitColliders)
-        {
-            if (hitCol.CompareTag("NPCBody"))
+        {//닿은 npc에게만 트루를 적용
+            if (hitCol.CompareTag("NPCBody")&& hitCol.gameObject == npc.gameObject)
             {
                 return true;
             }

@@ -5928,7 +5928,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 070ad16fa8471b342b0cef7952094903, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -5999,9 +5999,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolGroup: {fileID: 0}
-  patrolSpeed: 3
-  rotationSpeed: 3
-  runSpeed: 5
   alertDistance: 0
   coverPoint: {fileID: 0}
   bloodPrefab: {fileID: 1000012909287652, guid: 91c37d41547e68a41bb7f1053e33fd7c, type: 3}
@@ -6019,9 +6016,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6bb1527a726f6c42ba33bdc0bf9c5a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 5504259220806075267}
+  patrolSpeed: 3
+  originalPatrolSpeed: 0
+  rotationSpeed: 3
+  runSpeed: 5
+  alertDistance: 0
   areaMinBounds: {x: 0, y: 0, z: 0}
   areaMaxBounds: {x: 0, y: 0, z: 0}
+  animator: {fileID: 0}
 --- !u!1 &8819399281982139731
 GameObject:
   m_ObjectHideFlags: 0

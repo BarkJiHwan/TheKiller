@@ -65,6 +65,8 @@ public class Sniper : MonoBehaviour
                     firedBullet.transform.rotation = Quaternion.LookRotation(-direction);                    
                     firedBullet.GetComponent<Rigidbody>().AddForce(direction * bulletSpeed, ForceMode.Impulse);
 
+                    Destroy(firedBullet, 20f);
+
                     GunCoolDown = 1.5f;
                     bulletsCount -= 1;
                 }

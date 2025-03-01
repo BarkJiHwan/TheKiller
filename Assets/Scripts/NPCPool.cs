@@ -33,15 +33,5 @@ public class NPCPool : MonoBehaviour
     {
         obj.SetActive(false);
         objPool.Enqueue(obj);            
-    }
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    } 
 }

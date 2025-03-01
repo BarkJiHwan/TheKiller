@@ -8,34 +8,40 @@ public class NPCCoverState : IState
     private Transform coverPoint;
     private float coverRunSpeed;
     private float closeEnoughDistance = 0.1f;
+    private float coverTimer;
 
     public NPCCoverState(NPCActions npc)
     {
         this.npc = npc;
+        coverPoint = npc.GetCoverPoint();
     }
     public void Enter()
     {
-        coverPoint = npc.GetCoverPoint();
-        coverRunSpeed = npc.runSpeed;
-        // 커버 애니메이션 시작
-        npc.animator.SetBool("InCover", true);
-        npc.animator.SetFloat("Speed", coverRunSpeed);
-        // 커버로 이동하는 로직
-        MoveToCoverPoint();
+        npc.PatrolSpeed = 0;
+        npc.IdleDuration = Random.Range(2f, 5f);
+        npc.animator.SetBool("Cover", true);
     }
     public void Update()
     {
-        if (Vector3.Distance(npc.transform.position, coverPoint.position) > closeEnoughDistance)
+        coverTimer += Time.deltaTime;
+        if (coverTimer >= npc.IdleDuration && npc.animator.GetBool("Patrol") == true)
         {
+            coverTimer = 0;
+            npc.ChangeState(NPCState.PATROL);
+            return;
+        }
+        if (npc.animator.GetBool("Patrol") == false && Vector3.Distance(npc.transform.position, coverPoint.position) > closeEnoughDistance)
+        {
+            npc.animator.SetBool("Walk", false);
+            npc.animator.SetBool("Run", true);
+            npc.PatrolSpeed = 5;
             MoveToCoverPoint();
+            return;
         }
     }
     public void Exit()
-    {
-        // 커버 애니메이션 종료
-        npc.animator.SetBool("InCover", false);
-        npc.animator.SetFloat("Speed", 0f);
-        npc.animator.SetTrigger("Exit");
+    {        
+        npc.animator.SetBool("Cover", false);
     }
     private void MoveToCoverPoint()
     {

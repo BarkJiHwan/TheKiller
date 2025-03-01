@@ -4,39 +4,35 @@ using UnityEngine;
 
 public class NPCIdleState : IState
 {
-    private NPCActions npc;
-    private float idleDuration;
-    private float idleTimer;
-    private float originalPatrolSpeed;
+    private NPCActions npc;    
+    private float idleTimer;    
 
     public NPCIdleState(NPCActions npc)
     {
-        this.npc = npc;
-        originalPatrolSpeed = npc.PatrolSpeed;
+        this.npc = npc;        
     }
 
     public void Enter()
-    {        
-        idleDuration = Random.Range(2f, 5f);  // Idle 상태에서 멈춰있는 시간
+    {
         npc.PatrolSpeed = 0;
-        npc.animator.SetBool("Idle", true); // Idle 애니메이션 시작
+        npc.IdleDuration = Random.Range(2f, 5f);  // Idle 상태에서 멈춰있는 시간
+        npc.animator.SetBool("Idle", true); // Idle 애니메이션 시작                
     }
 
     public void Update()
     {
         idleTimer += Time.deltaTime;
-        if (idleTimer >= idleDuration && !npc.animator.GetBool("InCover"))
+        if (idleTimer >= npc.IdleDuration && npc.animator.GetBool("Patrol") == false)
         {
             // 일정 시간 대기 후 다음 상태로 전환
             idleTimer = 0f;
             npc.ChangeState(NPCState.PATROL);
             return;
         }
-        if (idleTimer >= idleDuration && npc.animator.GetBool("Patrol"))
+        if (idleTimer >= npc.IdleDuration && npc.animator.GetBool("Patrol") == true)
         {
             // 일정 시간 대기 후 다음 상태로 전환
-            idleTimer = 0f;
-            npc.PatrolSpeed = originalPatrolSpeed;
+            idleTimer = 0f;            
             npc.ChangeState(NPCState.PATROL);
             return;
         }

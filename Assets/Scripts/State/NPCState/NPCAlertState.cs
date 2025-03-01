@@ -13,28 +13,28 @@ public class NPCAlertState : IState
     }
     public void Enter()
     {
-        // 경고 애니메이션 시작
+        npc.PatrolSpeed = 0;
+        npc.IdleDuration = Random.Range(2f, 5f);
         npc.animator.SetBool("Alert", true);
-        npc.animator.SetBool("Walk", false);
-        alertTimer = 0f;
-        // 추가 처리 (예: 경고 사운드 재생, 주변 객체 탐색 등)
     }
     public void Update()
     {
-        // 경고 상태에서의 행동 로직
-        // 예: 주변을 탐색하며 플레이어를 찾는 로직
-
-        // 예시: 경고 상태에서 순찰로 전환
         alertTimer += Time.deltaTime;
-        if (alertTimer >= alertDuration)
+        if (alertTimer >= npc.IdleDuration && npc.animator.GetBool("Patrol") == true)
         {
-            // 일정 시간이 지나면 다시 순찰 상태로 전환
+            alertTimer = 0f;
             npc.ChangeState(NPCState.PATROL);
+            return;
+        }
+        if (alertTimer >= npc.IdleDuration && npc.animator.GetBool("Patrol") == false)
+        {
+            alertTimer = 0f;
+            npc.ChangeState(NPCState.COVER);
+            return;
         }
     }
     public void Exit()
     {
-        // 경고 애니메이션 종료
         npc.animator.SetBool("Alert", false);
     }
 }

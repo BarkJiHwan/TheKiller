@@ -15,8 +15,9 @@ public class NPCPatrolState : IState
         this.npc = npc;
     }
     public void Enter()
-    {        
-        patrolPoints = npc.GetPatrolPoints();       
+    {
+        npc.PatrolSpeed = npc.originalPatrolSpeed;
+        patrolPoints = npc.GetPatrolPoints();
         npc.animator.SetFloat("Speed", 2);
         npc.animator.SetBool("Patrol", true);
         npc.animator.SetBool("Walk", true);
@@ -43,8 +44,8 @@ public class NPCPatrolState : IState
         npc.transform.rotation = Quaternion.Slerp(npc.transform.rotation, lookRotation, Time.deltaTime * npc.rotationSpeed);
         npc.transform.position = Vector3.MoveTowards(npc.transform.position, targetPoint.transform.position, npc.PatrolSpeed * Time.deltaTime);
 
-        if (targetPoint.IsNPCInRange())
-        {            
+        if (targetPoint.IsNPCInRange(this.npc))
+        {
             MoveToNextPatrolPoint();
         }
         //else
@@ -70,8 +71,8 @@ public class NPCPatrolState : IState
     }
     private void RandomActions()
     {
-        int random = Random.Range(0, 1);
-        Debug.Log("상태" + random);
+        int random = Random.Range(0, 3);
+        npc.animator.SetBool("Walk", false);        
         if (random == 0)
         {
             npc.ChangeState(NPCState.IDLE); // 상태 1
@@ -93,7 +94,8 @@ public class NPCPatrolState : IState
         {
             if (hitCol.CompareTag("Bullet"))
             {
-                npc.SetAlert(true);
+                npc.PatrolSpeed = 0;
+                npc.animator.SetBool("Patrol", false);
                 npc.ChangeState(NPCState.ALERT);
                 break;
             }
