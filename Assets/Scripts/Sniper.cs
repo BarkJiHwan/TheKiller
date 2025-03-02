@@ -7,18 +7,17 @@ public class Sniper : MonoBehaviour
     private PlayerActions action;
     private GameObject player;
     public AudioSource shoot_sound;
-    private float GunCoolDown;
+    public float GunCoolDown = 1.5f;
     //ÅºÃ¢
-    private int bulletsCount;
+    public int bulletsCount = 15;
     public GameObject bulletPrefabs;//ÃÑ¾ËÇÁ¸®ÆÕ
     public GameObject muzzle;//¸ÓÁñ
     public GameObject target;
-    public float bulletSpeed = 100f;
+    public float bulletSpeed = 50f;
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        action = player.GetComponent<PlayerActions>();
-        bulletsCount = 13;
+        action = player.GetComponent<PlayerActions>();        
     }
 
     void Update()
@@ -35,7 +34,7 @@ public class Sniper : MonoBehaviour
     {
         if (GunCoolDown <= 0)
         {
-            if (bulletsCount > 0)
+            if (bulletsCount > 0 && action.animator.GetBool("Aiming") == true)
             {
                 if (Input.GetMouseButtonDown(0))
                 {

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NPCDeathState : IState
 {
@@ -12,22 +13,32 @@ public class NPCDeathState : IState
     }
     public void Enter()
     {
-        // 사망 애니메이션 시작
-        npc.animator.SetTrigger("Dead");
-
+        // GameManager에서 점수 증가
+        // 죽은 상황에 따라 점수 부여
+        if (npc.animator.GetBool("CrawlDie") == true )
+        {
+            npc.animator.SetTrigger("CrawlDie");
+            GameManager.Instance.AddScore(100);
+        }
+        if (npc.animator.GetBool("CrawlDie") == false)
+        {
+            npc.animator.SetTrigger("Dead");
+            GameManager.Instance.AddScore(200);
+        }
         // NPC의 모든 행동을 멈추기
         npc.GetComponent<Rigidbody>().isKinematic = true;
         npc.GetComponent<Collider>().enabled = false;
 
-        // 필요한 추가 처리를 수행
-        // 예: 점수 증가, 사망 효과 등
+        
+        GameObject.Destroy(npc.gameObject, 5f);
+        
     }
     public void Update()
     {
-        // 사망 상태에서는 특별한 업데이트 로직이 필요 없을 수 있습니다
+        // 사망 상태여서 없음
     }
     public void Exit()
     {
-        // 사망 상태에서는 특별한 종료 로직이 필요 없을 수 있습니다
+        // 사망 상태여서 없음
     }
 }

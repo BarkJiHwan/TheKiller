@@ -14,8 +14,6 @@ public class NPCController : MonoBehaviour
 
     [Header("기타 설정")]
     public GameObject bloodPrefab;
-    public Vector3 areaMinBounds;
-    public Vector3 areaMaxBounds;
 
     private PatrolPoint[] patrolPoints;
     private NPCActions npcActions;
@@ -35,8 +33,7 @@ public class NPCController : MonoBehaviour
         npcActions = GetComponent<NPCActions>();
         if (npcActions != null)
         {
-            npcActions.Initialize(patrolPoints, coverPoint, alertDistance, areaMinBounds, areaMaxBounds);
-            Debug.Log("NPC Actions initialized.");
+            npcActions.Initialize(patrolPoints, coverPoint, alertDistance);            
         }
         else
         {

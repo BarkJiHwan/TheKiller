@@ -94,6 +94,7 @@ public class NPCPatrolState : IState
         {
             if (hitCol.CompareTag("Bullet"))
             {
+                Debug.Log("ÃÑ¾Ë¹ß°ß");
                 npc.PatrolSpeed = 0;
                 npc.animator.SetBool("Patrol", false);
                 npc.ChangeState(NPCState.ALERT);

@@ -21,14 +21,9 @@ public class PlayerWeaponSwap : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         if (_weapons.GunTpye = null)
-        {//게임 시작시 무기 안듬
+        {
             SetWeapon(_weapons.name);
         }
-    }
-
-    private void Update()
-    {
-
     }
     public void SetWeapon(string name)
     {
