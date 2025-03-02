@@ -15,8 +15,6 @@ public class PlayerMove : MonoBehaviour
         actions.SetWeapon(actions._weapons.name);        
         tr = GetComponent<Transform>();
         defaultSpeed = moveSpeed;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
     void Update()
     {

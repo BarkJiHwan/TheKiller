@@ -8,6 +8,7 @@ TagManager:
   - NPCHead
   - Bullet
   - NPCBody
+  - GRAOUND
   layers:
   - Default
   - TransparentFX

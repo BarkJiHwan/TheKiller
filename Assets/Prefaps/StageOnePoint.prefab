@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1191885434800360489}
+  - component: {fileID: 1938755386998362829}
   m_Layer: 0
   m_Name: StageOnePoint
   m_TagString: Untagged
@@ -35,6 +36,23 @@ Transform:
   - {fileID: 4721665781647894951}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1938755386998362829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 427974688395687328}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 77a9df0e17d0b274ba463f690587d855, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patrols:
+  - {fileID: 8340734150592441183}
+  - {fileID: 3258830074322305649}
+  - {fileID: 7520644442697563834}
+  - {fileID: 2668677863985099419}
 --- !u!1 &2557187551492052894
 GameObject:
   m_ObjectHideFlags: 0

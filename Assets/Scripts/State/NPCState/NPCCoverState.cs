@@ -13,11 +13,12 @@ public class NPCCoverState : IState
     public NPCCoverState(NPCActions npc)
     {
         this.npc = npc;
-        coverPoint = npc.GetCoverPoint();
+        coverRunSpeed = 6f;
     }
     public void Enter()
     {
         npc.PatrolSpeed = 0;
+        coverPoint = npc.GetCoverPoint();
         npc.IdleDuration = Random.Range(2f, 5f);
         npc.animator.SetBool("Cover", true);
     }
@@ -34,9 +35,15 @@ public class NPCCoverState : IState
         {
             npc.animator.SetBool("Walk", false);
             npc.animator.SetBool("Run", true);
-            npc.PatrolSpeed = 5;
-            MoveToCoverPoint();
-            return;
+            npc.PatrolSpeed = 6f;
+            MoveToCoverPoint();            
+            if (Vector3.Distance(npc.transform.position, coverPoint.position) <= closeEnoughDistance)
+            {
+                npc.animator.SetBool("Run", false);
+                npc.animator.SetBool("Idle", false);
+                npc.animator.SetBool("Cover", false);
+                npc.animator.SetTrigger("Exit");
+            }
         }
     }
     public void Exit()
@@ -48,6 +55,10 @@ public class NPCCoverState : IState
         if (coverPoint != null)
         {
             npc.transform.position = Vector3.MoveTowards(npc.transform.position, coverPoint.position, coverRunSpeed * Time.deltaTime);
+        }
+        else
+        {
+            Debug.Log("커버 포인트를 못찾음");
         }
     }
 }

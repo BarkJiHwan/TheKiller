@@ -231,7 +231,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spinSpeed: 1000
-  bulletImpactPrefab: {fileID: 100014, guid: 0412242db716836419982ce004514b9f, type: 3}
+  bulletMarkPrefab: {fileID: 100006, guid: 82da58c5f3032294b833127ab9fc28de, type: 3}
 --- !u!64 &2338040685578352999
 MeshCollider:
   m_ObjectHideFlags: 0

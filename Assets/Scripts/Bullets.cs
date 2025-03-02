@@ -5,8 +5,10 @@ using UnityEngine;
 
 public class Bullets : MonoBehaviour
 {
-    public float spinSpeed = 1000f;
-    public GameObject bulletImpactPrefab;      
+    public float spinSpeed = 1000f;    
+    public GameObject bulletMarkPrefab;
+
+    private bool hasHit = false;
 
     private void Start()
     {
@@ -15,60 +17,34 @@ public class Bullets : MonoBehaviour
     }
     private void Update()
     {
-        transform.Rotate(0, 0, spinSpeed * Time.deltaTime);                  
-        ShootRaycast();
+        transform.Rotate(0, 0, spinSpeed * Time.deltaTime);
+        if (!hasHit)
+        { 
+            ShootRaycast();
+        }
+        hasHit = false;
     }
 
     private void ShootRaycast()
     {
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
-        {
+        if (Physics.Raycast(ray, out hit, 2f))
+        {            
             OnBulletHit(hit);
         }
     }
     private void OnBulletHit(RaycastHit hit)
     {
-        NPCController npc = hit.collider.GetComponentInParent<NPCController>();
-        
-        if (npc != null)
-        {            
-            npc.RayHit(hit.point, hit.normal, hit.collider.tag);                        
-        }
-        else
+        if (!hasHit)
         {
-            // NPC가 아닌 오브젝트에 충돌 시 파티클 시스템 생성
-            CreateBulletImpact(hit.point, hit.normal);
-        }
-    }
+            NPCController npc = hit.collider.GetComponentInParent<NPCController>();
 
-    private void CreateBulletImpact(Vector3 position, Vector3 normal)
-    {
-        if(bulletImpactPrefab != null)
-        {
-            Quaternion rotation = Quaternion.LookRotation(normal);
-            GameObject impact = Instantiate(bulletImpactPrefab, position, rotation);
-
-            // 파티클 시스템이 완료되면 오브젝트 파괴
-            StartCoroutine(DestroyImpactPrefab(impact));
-        }
-        else
-        {
-            Debug.LogWarning("bulletImpactPrefab껴야됨");
-        }
-    }
-
-    IEnumerator DestroyImpactPrefab(GameObject impact)
-    {
-        ParticleSystem particleSystem = impact.GetComponent<ParticleSystem>();
-        if (particleSystem != null)
-        {
-            while (!particleSystem.isPlaying)
+            if (npc != null)
             {
-                yield return null;
+                npc.RayHit(hit.point, hit.normal, hit.collider.tag);
+                hasHit = true;
             }
         }
-        Destroy(impact);
     }
 }
