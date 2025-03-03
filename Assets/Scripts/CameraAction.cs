@@ -47,8 +47,6 @@ public class CameraAction : MonoBehaviour
         float scrollData = Input.GetAxis("Mouse ScrollWheel");
         if (!Input.GetMouseButton(1))
         {
-            //camComposer.m_TrackedObjectOffset.x += rX;
-            //camComposer.transform.Rotate(0, (rX * turnSpeed), 0);
             camComposer.m_TrackedObjectOffset.y += rY;
             player.transform.Rotate(0, rX, 0);
         }

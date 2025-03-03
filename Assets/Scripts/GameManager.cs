@@ -99,23 +99,23 @@ public class GameManager : MonoBehaviour
         List<ScoreData> topScores = LoadScoresFromJson();
         topScores.Add(new ScoreData { score = score });
 
-        // 상위 10위 점수만 유지
+        //상위 10위 점수만 유지
         topScores = topScores.OrderByDescending(s => s.score).Take(10).ToList();
 
-        // JSON 데이터 생성
+        //JSON 데이터 생성
         ScoreDataList scoreDataList = new ScoreDataList { scores = topScores };
 
-        // JSON 파일 경로 설정
+        //JSON 파일 경로 설정
         string filePath = Path.Combine(Application.persistentDataPath, "score.json");
 
-        // 디렉토리 존재 여부 확인 및 생성
+        //디렉토리 존재 여부 확인 및 생성
         string directoryPath = Path.GetDirectoryName(filePath);
         if (!Directory.Exists(directoryPath))
         {
             Directory.CreateDirectory(directoryPath);
         }
 
-        // JSON 데이터 직렬화 및 파일로 저장
+        //JSON 데이터 직렬화 및 파일로 저장
         string json = JsonUtility.ToJson(scoreDataList);
         File.WriteAllText(filePath, json);
     }
