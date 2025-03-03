@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class NPCDeathState : IState
 {
     private NPCActions npc;
+    private bool isDead = false;
 
     public NPCDeathState(NPCActions npc)
     {
@@ -13,17 +14,21 @@ public class NPCDeathState : IState
     }
     public void Enter()
     {
-        // GameManager에서 점수 증가
-        // 죽은 상황에 따라 점수 부여
-        if (npc.animator.GetBool("CrawlDie") == true )
+        if (!isDead)
+        //GameManager에서 점수 증가
+        //죽은 상황에 따라 점수 부여
         {
-            npc.animator.SetTrigger("CrawlDie");
-            GameManager.Instance.AddScore(100);
-        }
-        if (npc.animator.GetBool("CrawlDie") == false)
-        {
-            npc.animator.SetTrigger("Dead");
-            GameManager.Instance.AddScore(200);
+            if (npc.animator.GetBool("CrawlDie") == true)
+            {
+                npc.animator.SetTrigger("CrawlDie");
+                GameManager.Instance.AddScore(100);
+            }
+            else if (npc.animator.GetBool("CrawlDie") == false)
+            {
+                npc.animator.SetTrigger("Dead");
+                GameManager.Instance.AddScore(200);
+            }
+            isDead = true;
         }
         // NPC의 모든 행동을 멈추기
         npc.GetComponent<Rigidbody>().isKinematic = true;

@@ -16,7 +16,7 @@ public class NPCPool : MonoBehaviour
     public GameObject GetObject()
     {
         if(objPool.Count > 0)
-        {
+        {            
             GameObject obj = objPool.Dequeue();
             obj.SetActive(true);
             return obj;

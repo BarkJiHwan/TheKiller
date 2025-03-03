@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
 
     public GameObject endGameUI;
     public TextMeshProUGUI[] topScoreTexts;
+    public TextMeshProUGUI warningText;
     private void Awake()
     {
         if (Instance == null)
@@ -30,8 +31,13 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         endGameUI.SetActive(false);
+        warningText.gameObject.SetActive(false);
     }
-
+    public void ShowStageStartMessage(int stage)
+    {
+        string message = $"Stage {stage} Start! \nEliminate as many enemies as possible!";
+        ShowWarningMessage(message);
+    }
     public void UpdateScoreUI(int score)
     {
         scoreText.text = "Score: " + score;
@@ -78,6 +84,33 @@ public class UIManager : MonoBehaviour
 
         scoreText.text = "";
         remainingEnemiesText.text = "";
+    }
+    public void ShowWarningMessage(string message)
+    {
+        if (warningText != null)
+        {
+            StartCoroutine(ShowWarning(message));
+        }
+    }
+
+    private IEnumerator ShowWarning(string message)
+    {
+        warningText.text = message;
+        warningText.gameObject.SetActive(true); // 경고 메시지 활성화
+
+        Color originalColor = warningText.color;
+        Color transparentColor = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
+        float duration = 3f; // 깜박이는 시간
+
+        for (float t = 0f; t < duration; t += Time.deltaTime)
+        {
+            float alpha = Mathf.PingPong(t * 2f, 1f); // 알파값을 0에서 1 사이로 깜박이게 조절
+            warningText.color = new Color(originalColor.r, originalColor.g, originalColor.b, alpha);
+            yield return null;
+        }
+
+        warningText.color = originalColor; // 원래 색상으로 복구
+        warningText.gameObject.SetActive(false); // 경고 메시지 비활성화
     }
 
     public void OnRestartButtonClicked()
