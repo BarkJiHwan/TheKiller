@@ -14,15 +14,10 @@ public class NPCManager : MonoBehaviour
 
     [Header("NPC 행동 설정")]
     public float patrolSpeed;
-    public float alertDistance;
-
-    [Header("스테이지 설정")]
-    public int stage = 1;
+    public float alertDistance;        
 
     [Header("애니메이션 설정")]
     public RuntimeAnimatorController animatorController;    
-
-    private List<NPCActions> npcList = new List<NPCActions>();
     
     public static NPCManager Instance;
 
@@ -38,22 +33,21 @@ public class NPCManager : MonoBehaviour
         }
     }
     private void Start()
-    {
-        int stage = GameManager.Instance.GetCurrentStage();
+    {        
+        int stage = GameManager.Instance.GetCurrentStage();        
         SpawnNPCsForStage(stage);
-
     }
+
     public void InitializeNPCs(PatrolGroup patrolGroup)
     {
         for (int i = 0; i < poolSize; i++)
         {
             GameObject npcObj = NPCPool.Instance.GetObject();
             npcObj.SetActive(false);
-            NPCActions npc = npcObj.GetComponent<NPCActions>();
-            npcList.Add(npc);
+            NPCActions npc = npcObj.GetComponent<NPCActions>();            
             GameManager.Instance.npcs.Add(npc);
-
-            Transform randomSpawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
+            
+            Transform randomSpawnPoint = spawnPoints[GameManager.Instance.stage];
             npcObj.transform.position = randomSpawnPoint.position;
             if (patrolGroup.patrols != null && patrolGroup.patrols.Length > 0)
             {
@@ -91,6 +85,6 @@ public class NPCManager : MonoBehaviour
         if (patrolGroup != null)
         {
             InitializeNPCs(patrolGroup);
-        }        
+        }
     }
 }

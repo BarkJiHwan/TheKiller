@@ -11,15 +11,21 @@ public class GameManager : MonoBehaviour
 
     private int score;
     private float timer;
+    
     private bool isNextRoundTriggered;
     private bool isGameOver;
-    private bool isRunningTime;
-    private int stage;
+    private bool isRunningTime;    
+    private bool isNextRoundProcessing; //다음 스테이지 진입시 매 프래임마다 ++되는 것을 막기 위한 불변수
+
 
     public List<NPCActions> npcs = new List<NPCActions>();//게임 시작 시 생성 될 npc의 수 죽은적 리무브
-    public List<NPCActions> defeatedNpcs = new List<NPCActions>();//게임 시작 후 처치한 적의 수 누적
-    public PatrolGroup[] patrolGroups;
-    //public PatrolGroup patrolGroup2;
+    public List<NPCActions> defeatedNpcs = new List<NPCActions>();//게임 시작 후 처치한 적의 수 누적    
+    
+    public List<StageData> stageDataList;
+    public int stage = 0;
+    private GameObject currentPatrolGroupInstance; //현재 패트롤 그룹 인스턴스
+    private GameObject currentNpcSpawnPointInstance; //현재 NPC 스폰 포인트 인스턴스
+    private GameObject currentPlayerSpawnPointInstance; //현재 플레이어 스폰 포인트 인스턴스
 
     private void Awake()
     {
@@ -38,12 +44,13 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         isGameOver = false;
+        isNextRoundProcessing = false;
         StartNewRound();
     }
 
     private void Update()
     {
-        // 타이머 업데이트
+        //타이머 업데이트
         if (isRunningTime)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -59,11 +66,10 @@ public class GameManager : MonoBehaviour
             UIManager.Instance.UpdateTimerUI(timer);
             UIManager.Instance.UpdateRemainingEnemiesUI(npcs.Count);
 
-            // 모든 NPC가 사망했는지 확인하고 NextRound가 이미 호출되지 않았는지 확인
-            if (CheckAllNPCsDead() && !isNextRoundTriggered && isGameOver)
+            //모든 NPC가 사망했는지 확인하고 NextRound가 이미 호출되지 않았는지 확인
+            if (CheckAllNPCsDead() && !isNextRoundTriggered)
             {
-                isGameOver = false;
-                isNextRoundTriggered = true; // NextRound가 이미 호출되었음을 표시
+                isNextRoundTriggered = true; //NextRound가 이미 호출되었음을 표시
                 NextRound();
             }
         }
@@ -78,13 +84,13 @@ public class GameManager : MonoBehaviour
     private void OnTimerEnd()
     {
         isGameOver = true;
-        // 타임 슬레이트로 게임 멈춤
+        //타임 슬레이트로 게임 멈춤
         Time.timeScale = 0f;
 
-        // 점수를 JSON 파일로 저장
+        //점수를 JSON 파일로 저장
         SaveScore();
 
-        // UI 활성화
+        //UI 활성화
         UIManager.Instance.ShowEndGameUI(score, defeatedNpcs.Count, GetTopScores());
     }
 
@@ -155,28 +161,35 @@ public class GameManager : MonoBehaviour
 
     private void NextRound()
     {
-        // 다음 라운드로 넘어가는 로직
+        if (isNextRoundProcessing) return; //이미 다음 라운드로 넘어가는 중인지 확인
+        isNextRoundProcessing = true;
+        //다음 라운드로 넘어가는 로직
         stage++;
-        if (stage > patrolGroups.Length)
+        Debug.Log(stage+"라운드로넘어감");
+        if (stage > stageDataList.Count)
         {
-            // 최종 스테이지를 완료했을 때 게임 종료
+            //최종 스테이지를 완료했을 때 게임 종료
             OnGameEnd();
         }
         else
         {
-            StartNewRound();
+            //다음 라운드로 이동
+            isNextRoundTriggered = false;
+            UpdateRound();
         }
     }
 
     public void StartNewRound()
     {
+        // 게임 상태 초기화 메소드
         isGameOver = false;
-        // 게임 상태 초기화
-        timer = 120f; // 타이머를 다시 2분(120초)으로 설정
+        stage = 0;
+        score = 0;
+        timer = 120f; //타이머를 다시 2분(120초)으로 설정
         isRunningTime = true;
-        isNextRoundTriggered = false; // 새로운 라운드를 시작할 때 초기화
-        defeatedNpcs.Clear(); // 처치한 적 리스트 초기화
-
+        isNextRoundTriggered = false; //새로운 라운드를 시작할 때 초기화
+        isNextRoundProcessing = false;
+        defeatedNpcs.Clear(); //처치한 적 리스트 초기화
         Cursor.visible = false; //마우스 다시 비활성화
         Cursor.lockState = CursorLockMode.None;
 
@@ -186,19 +199,119 @@ public class GameManager : MonoBehaviour
             NPCPool.Instance.ReturnObject(npc.gameObject);
         }
         npcs.Clear(); // NPC 리스트 초기화
+        ClearCurrentInstances();
+        InitializeStage(stage);
 
-        // 새로운 NPC 생성
+        //새로운 NPC 생성
         PatrolGroup patrolGroup = GetPatrolGroup(stage);
         if (patrolGroup != null)
         {
             NPCManager.Instance.InitializeNPCs(patrolGroup);
         }
-        PlayerManager.Instance.MovePlayerToSpawnPoint(0);
+        PlayerManager.Instance.MovePlayerToSpawnPoint(stage);
 
+        //UI초기화
         UIManager.Instance.UpdateTimerUI(timer);
         UIManager.Instance.UpdateScoreUI(score);
         UIManager.Instance.UpdateStageUI(stage);
+        UIManager.Instance.ShowStageStartMessage(stage);
+        RoundText[] roundTexts = FindObjectsOfType<RoundText>();
+        foreach (RoundText rt in roundTexts)
+        {
+            rt.UpdateRoundText(stage);
+        }
     }
+    private void ClearCurrentInstances()
+    {
+        // 현재 패트롤 그룹 인스턴스를 제거
+        if (currentPatrolGroupInstance != null)
+        {
+            Destroy(currentPatrolGroupInstance);
+            currentPatrolGroupInstance = null;
+        }
+
+        // 현재 NPC 스폰 포인트 인스턴스를 제거
+        if (currentNpcSpawnPointInstance != null)
+        {
+            Destroy(currentNpcSpawnPointInstance);
+            currentNpcSpawnPointInstance = null;
+        }
+
+        // 현재 플레이어 스폰 포인트 인스턴스를 제거
+        if (currentPlayerSpawnPointInstance != null)
+        {
+            Destroy(currentPlayerSpawnPointInstance);
+            currentPlayerSpawnPointInstance = null;
+        }
+    }
+
+    private void InitializeStage(int stageIndex)
+    {
+        StageData stageData = stageDataList[stageIndex];
+
+        // 패트롤 그룹 초기화
+        if (stageData.patrolGroupPrefab != null)
+        {
+            currentPatrolGroupInstance = Instantiate(stageData.patrolGroupPrefab);
+            currentPatrolGroupInstance.name = $"PatrolGroup_Stage_{stageData.stageNumber}";
+        }
+
+        //NPC 스폰 포인트 초기화
+        if (stageData.npcSpawnPointPrefab != null)
+        {
+            currentNpcSpawnPointInstance = Instantiate(stageData.npcSpawnPointPrefab);            
+        }
+
+        //플레이어 스폰 포인트 초기화
+        if (stageData.playerSpawnPointPrefab != null)
+        {
+            currentPlayerSpawnPointInstance = Instantiate(stageData.playerSpawnPointPrefab);
+            PlayerManager.Instance.MovePlayerToSpawnPoint(stageData.stageNumber);
+        }
+
+        // NPC 초기화
+        if (currentPatrolGroupInstance != null)
+        {
+            PatrolGroup patrolGroup = currentPatrolGroupInstance.GetComponent<PatrolGroup>();
+            if (patrolGroup != null)
+            {
+                NPCManager.Instance.InitializeNPCs(patrolGroup);
+            }
+        }
+    }
+
+    private void UpdateRound()
+    {
+        //기존 정보를 유지한 상태로 새로운 라운드 설정
+        timer = 120f; // 타이머를 다시 2분(120초)으로 설정
+        isRunningTime = true;
+        isNextRoundTriggered = false; // 새로운 라운드를 시작할 때 초기화
+
+        //NPC 상태 초기화
+        foreach (NPCActions npc in npcs)
+        {
+            NPCPool.Instance.ReturnObject(npc.gameObject);
+        }
+        npcs.Clear(); //NPC 리스트 초기화
+        ClearCurrentInstances();
+        InitializeStage(stage);
+        
+        PlayerManager.Instance.MovePlayerToSpawnPoint(stage);
+
+        //점수를 제외한 UI 초기화
+        UIManager.Instance.UpdateTimerUI(timer);
+        UIManager.Instance.UpdateStageUI(stage);
+        UIManager.Instance.ShowStageStartMessage(stage);
+
+        //RoundText 오브젝트에 라운드 값 전달
+        RoundText[] roundTexts = FindObjectsOfType<RoundText>();
+        foreach (RoundText rt in roundTexts)
+        {
+            rt.UpdateRoundText(stage);
+        }
+        isNextRoundProcessing = false;
+    }
+
 
     private void OnGameEnd()
     {
@@ -213,9 +326,10 @@ public class GameManager : MonoBehaviour
 
     public PatrolGroup GetPatrolGroup(int stage)
     {
-        if (stage >= 1 && stage <= patrolGroups.Length)
+        if (stage >= 1 && stage <= stageDataList.Count)
         {
-            return patrolGroups[stage - 1];
+            StageData stageData = stageDataList[stage - 1];
+            return stageData.patrolGroupPrefab != null ? stageData.patrolGroupPrefab.GetComponent<PatrolGroup>() : null;
         }
         return null;
     }

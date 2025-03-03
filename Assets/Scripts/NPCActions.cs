@@ -69,16 +69,7 @@ public class NPCActions : MonoBehaviour
     }
     void Update()
     {
-        if(isTargetNPC)
-        {
-            ApplySpecialEffect();
-        }
         currentState.Update();
-    }
-
-    void ApplySpecialEffect()
-    {
-
     }
 
     public void ChangeState(NPCState newState)

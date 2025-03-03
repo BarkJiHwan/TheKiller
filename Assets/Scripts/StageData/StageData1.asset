@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4173fcedb1c85bf4fb9f54870939d7de, type: 3}
+  m_Name: StageData1
+  m_EditorClassIdentifier: 
+  stageNumber: 1
+  patrolGroupPrefab: {fileID: 427974688395687328, guid: f9fc6e11113195c4d8b70a85831b0392, type: 3}
+  npcSpawnPointPrefab: {fileID: 2708533252811957543, guid: 4d5898fe560ef55459f68be7dabbd519, type: 3}
+  playerSpawnPointPrefab: {fileID: 1082168353742707051, guid: 3c0814af139b5714a9d67f35ef0bfe5b, type: 3}

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PatrolPoint : MonoBehaviour
@@ -7,6 +8,17 @@ public class PatrolPoint : MonoBehaviour
     public float detectionRadius = 1.0f; // 감지 반경
     public LayerMask npcLayer; // NPC 레이어
 
+    public GameObject particlePrefab; // 파티클 프리팹
+
+    private GameObject particleInstance;
+    private void Start()
+    {
+        if (particlePrefab != null)
+        {
+            // 파티클 프리팹 인스턴시에이트
+            particleInstance = Instantiate(particlePrefab, transform.position, Quaternion.identity, transform);
+        }
+    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
