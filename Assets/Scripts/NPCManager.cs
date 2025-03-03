@@ -42,13 +42,15 @@ public class NPCManager : MonoBehaviour
     {
         for (int i = 0; i < poolSize; i++)
         {
+            //앤피시 셋팅
             GameObject npcObj = NPCPool.Instance.GetObject();
             npcObj.SetActive(false);
             NPCActions npc = npcObj.GetComponent<NPCActions>();            
             GameManager.Instance.npcs.Add(npc);
-            
-            Transform randomSpawnPoint = spawnPoints[GameManager.Instance.stage];
-            npcObj.transform.position = randomSpawnPoint.position;
+            //스테이지에 따른 스폰지역
+            Transform SpawnPoint = spawnPoints[GameManager.Instance.stage];            
+            npcObj.transform.position = SpawnPoint.position;
+
             if (patrolGroup.patrols != null && patrolGroup.patrols.Length > 0)
             {
                 coverPoint = patrolGroup.patrols[0].transform;
@@ -62,7 +64,7 @@ public class NPCManager : MonoBehaviour
             //애니메이터 컨트롤러 할당
             animator.runtimeAnimatorController = animatorController; 
             //첫번째 생성되는 앤피시 타겟 지정
-            npc.isTargetNPC = (i == 0);
+            //npc.isTargetNPC = (i == 0);
             //NPC 초기화
             npc.Initialize(patrolGroup.patrols, coverPoint, alertDistance);
             //랜덤한 속도 지정
