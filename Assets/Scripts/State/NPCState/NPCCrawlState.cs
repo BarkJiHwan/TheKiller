@@ -13,7 +13,7 @@ public class NPCCrawlState : IState
         this.npc = npc;
     }
 
-    public void Enter()
+    public void EnterState()
     {        
         coverPoint = npc.GetCoverPoint();
         npc.PatrolSpeed = 1f;
@@ -21,7 +21,7 @@ public class NPCCrawlState : IState
         npc.animator.SetBool("Walk", false);
         npc.animator.SetBool("Crawl", true);
     }
-    public void Update()
+    public void UpdateState()
     {
         if (!npc.isDead && npc.animator.GetBool("Crawl") == true && Vector3.Distance(npc.transform.position, coverPoint.position) > closeEnoughDistance)
         {
@@ -43,7 +43,7 @@ public class NPCCrawlState : IState
         }
     }
 
-    public void Exit()
+    public void ExitState()
     {
         
     }

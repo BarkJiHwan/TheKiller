@@ -15,14 +15,14 @@ public class NPCCoverState : IState
         this.npc = npc;
         coverRunSpeed = 6f;
     }
-    public void Enter()
+    public void EnterState()
     {
         npc.PatrolSpeed = 0;
         coverPoint = npc.GetCoverPoint();
         npc.IdleDuration = Random.Range(2f, 5f);
         npc.animator.SetBool("Cover", true);
     }
-    public void Update()
+    public void UpdateState()
     {
         coverTimer += Time.deltaTime;
         if (coverTimer >= npc.IdleDuration && npc.animator.GetBool("Patrol") == true)
@@ -35,18 +35,16 @@ public class NPCCoverState : IState
         {
             npc.animator.SetBool("Walk", false);
             npc.animator.SetBool("Run", true);
-            npc.PatrolSpeed = 6f;
+            npc.PatrolSpeed = npc.PatrolSpeed * 0.5f;
             MoveToCoverPoint();            
             if (Vector3.Distance(npc.transform.position, coverPoint.position) <= closeEnoughDistance)
-            {
-                npc.animator.SetBool("Run", false);
-                npc.animator.SetBool("Idle", false);
-                npc.animator.SetBool("Cover", false);
-                npc.animator.SetTrigger("Exit");
+            {                
+                npc.ChangeState(NPCState.PATROL);
+                return;
             }
         }
     }
-    public void Exit()
+    public void ExitState()
     {        
         npc.animator.SetBool("Cover", false);
     }
@@ -55,6 +53,7 @@ public class NPCCoverState : IState
         if (coverPoint != null)
         {
             npc.transform.position = Vector3.MoveTowards(npc.transform.position, coverPoint.position, coverRunSpeed * Time.deltaTime);
+            npc.transform.rotation = Quaternion.identity;
         }
         else
         {

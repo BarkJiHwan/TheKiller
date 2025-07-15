@@ -10,16 +10,16 @@ public class WalkState : IState
     {
         this.player = player;
     }
-    public void Enter()
+    public void EnterState()
     {        
         player.animator.SetBool("Aiming", false);
         player.animator.SetFloat("Speed", 0.5f);
     }
-    public void Exit()
+    public void ExitState()
     { 
         player.animator.SetFloat("Speed", 0f);
     }
-    public void Update()
+    public void UpdateState()
     {
     }
 }

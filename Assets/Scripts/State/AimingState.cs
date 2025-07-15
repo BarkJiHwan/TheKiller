@@ -10,18 +10,18 @@ public class AimingState : IState
         this.player = player;
     }
     
-    public void Enter()
+    public void EnterState()
     {        
         player.animator.SetFloat("Speed", 0f);
         player.animator.SetBool("Aiming", true);
     }
 
-    public void Exit()
+    public void ExitState()
     {        
         player.animator.SetBool("Aiming", false);
     }
 
-    public void Update()
+    public void UpdateState()
     {
         player.animator.SetBool("Aiming", true);
     }

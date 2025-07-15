@@ -10,18 +10,18 @@ public class AttackState : IState
         this.player = player;
     }
 
-    public void Enter()
+    public void EnterState()
     {        
         player.animator.SetTrigger("Attack");
         player.animator.SetBool("Aiming", true);
     }
 
-    public void Exit()
+    public void ExitState()
     {
         player.animator.SetBool("Aiming", false);
     }
 
-    public void Update()
+    public void UpdateState()
     {          
     }
 }

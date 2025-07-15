@@ -12,10 +12,6 @@ public enum PlayerState
     RUN,
     AIMING,    
     ATTACK,
-    WARY,
-    SNEAK,
-    CROUCHINGRUN,
-    DEATH
 }
 public class PlayerActions : MonoBehaviour
 {
@@ -34,26 +30,23 @@ public class PlayerActions : MonoBehaviour
             { PlayerState.RUN, new RunState(this) },
             { PlayerState.AIMING, new AimingState(this) },
             { PlayerState.ATTACK, new AttackState(this) },
-            { PlayerState.WARY, new WaryState(this) },
-            { PlayerState.CROUCHINGRUN, new CrouchingRunState(this) },
-            { PlayerState.DEATH, new DeathState(this) }
         };
         ChangeState(PlayerState.IDLE);
     }
 
     void Update()
     {
-        currentState.Update();
+        currentState.UpdateState();
     }
 
     public void ChangeState(PlayerState newState)
     {
         if (currentState != null)
         {
-            currentState.Exit();
+            currentState.ExitState();
         }
         currentState = states[newState];
-        currentState.Enter();
+        currentState.EnterState();
     }
 
     [System.Serializable]
@@ -82,8 +75,6 @@ public class PlayerActions : MonoBehaviour
                 //생성과 동시에 X값을 90도 회전시켜 캐릭터의 손에 맞춤(캐릭터가 바뀌면 위치가 바뀔수 있음.)
                 newtGunTpye.transform.localRotation = Quaternion.Euler(90, 0, 0);
             }
-            //총에 맞는 애니메이터로 갈아낌
-            animator.runtimeAnimatorController = _weapons.controller;
         }
     }
 }

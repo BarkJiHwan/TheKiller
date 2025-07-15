@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class NPCController : MonoBehaviour
@@ -19,26 +20,14 @@ public class NPCController : MonoBehaviour
     private NPCActions npcActions;
     void Start()
     {
+        npcActions = GetComponent<NPCActions>();
         InitializePatrolPoints();
-        InitializeNPCActions();
+        //InitializeNPCActions();
     }
 
     private void InitializePatrolPoints()
     {
         patrolPoints = patrolGroup.GetPatrolPoints();        
-    }
-
-    private void InitializeNPCActions()
-    {
-        npcActions = GetComponent<NPCActions>();
-        if (npcActions != null)
-        {
-            npcActions.Initialize(patrolPoints, coverPoint, alertDistance);            
-        }
-        else
-        {
-            Debug.LogError("NPCActions 컴포넌트가 할당되지 않았습니다.");
-        }
     }
 
     public PatrolPoint[] GetPatrolPoints()
@@ -47,17 +36,30 @@ public class NPCController : MonoBehaviour
     }
 
     public void RayHit(Vector3 hitPos, Vector3 hitNormal, string hitPoint)
-    {
-        Quaternion rot = Quaternion.LookRotation(hitNormal);
-        GameObject blood = Instantiate(bloodPrefab, hitPos, rot);
-        blood.transform.parent = transform;
-        if(hitPoint == "NPCHead")
+    {            
+        if (bloodPrefab == null)
         {
-            npcActions.HeadShot();
+            Debug.LogError("bloodPrefab이 할당되지 않았습니다.", this);
+            return;
         }
-        else if(hitPoint == "NPCBody")
+        GameObject blood = Instantiate(bloodPrefab, hitPos, Quaternion.LookRotation(hitNormal));
+        blood.transform.parent = transform;
+
+        if (npcActions == null)
+        {            
+            Debug.LogError("npcActions가 할당되지 않았습니다.", this);
+            return;
+        }
+        if(!npcActions.isDead)
         {
-            npcActions.BodyShot();
-        }        
+            if (hitPoint == "NPCHead")
+            {
+                npcActions.HeadShot();
+            }
+            else if (hitPoint == "NPCBody")
+            {
+                npcActions.BodyShot();
+            }
+        }
     }   
 }

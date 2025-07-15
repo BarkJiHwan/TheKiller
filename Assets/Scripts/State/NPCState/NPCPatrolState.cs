@@ -14,7 +14,7 @@ public class NPCPatrolState : IState
     {
         this.npc = npc;
     }
-    public void Enter()
+    public void EnterState()
     {
         npc.PatrolSpeed = npc.originalPatrolSpeed;
         patrolPoints = npc.GetPatrolPoints();
@@ -23,15 +23,15 @@ public class NPCPatrolState : IState
         npc.animator.SetBool("Walk", true);
         targetPoint = patrolPoints[currentPointIndex];
     }
-    public void Update()
+    public void UpdateState()
     {
         if (npc.animator.GetBool("Walk"))
         {
             NPCMove();
         }
-        CheckAlertState();
+        CheckBullet();
     }
-    public void Exit()
+    public void ExitState()
     {
         npc.animator.SetBool("Walk", false);
     }
@@ -87,7 +87,7 @@ public class NPCPatrolState : IState
             npc.ChangeState(NPCState.COVER); // ป๓ลย 3
         }
     }
-    private void CheckAlertState()
+    private void CheckBullet()
     {
         Collider[] hitColliders = Physics.OverlapSphere(npc.transform.position, npc.GetAlertDistance());
         foreach (Collider hitCol in hitColliders)

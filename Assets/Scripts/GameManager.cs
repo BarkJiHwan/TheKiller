@@ -7,11 +7,10 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
-
     private int score;
-    private float timer;
-    
+    [SerializeField] private float timer;
+    [SerializeField] private UIManager _uiManager;
+
     private bool isNextRoundTriggered;
     private bool isGameOver;
     private bool isRunningTime;    
@@ -27,22 +26,13 @@ public class GameManager : MonoBehaviour
     private GameObject currentNpcSpawnPointInstance; //현재 NPC 스폰 포인트 인스턴스
     private GameObject currentPlayerSpawnPointInstance; //현재 플레이어 스폰 포인트 인스턴스
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
+    [SerializeField] private NPCManager _npcManager;
+    [SerializeField] private PlayerManager _playerManager;
+    [SerializeField] private NPCPool _npcPool;
 
     private void Start()
     {
+        Time.timeScale = 1f;
         isGameOver = false;
         isNextRoundProcessing = false;
         StartNewRound();
@@ -63,8 +53,8 @@ public class GameManager : MonoBehaviour
                 OnTimerEnd();
             }
 
-            UIManager.Instance.UpdateTimerUI(timer);
-            UIManager.Instance.UpdateRemainingEnemiesUI(npcs.Count);
+            _uiManager.UpdateTimerUI(timer);
+            _uiManager.UpdateRemainingEnemiesUI(npcs.Count);
 
             //모든 NPC가 사망했는지 확인하고 NextRound가 이미 호출되지 않았는지 확인
             if (CheckAllNPCsDead() && !isNextRoundTriggered)
@@ -78,7 +68,7 @@ public class GameManager : MonoBehaviour
     public void AddScore(int points)
     {
         score += points;
-        UIManager.Instance.UpdateScoreUI(score);
+        _uiManager.UpdateScoreUI(score);
     }
 
     private void OnTimerEnd()
@@ -91,7 +81,7 @@ public class GameManager : MonoBehaviour
         SaveScore();
 
         //UI 활성화
-        UIManager.Instance.ShowEndGameUI(score, defeatedNpcs.Count, GetTopScores());
+        _uiManager.ShowEndGameUI(score, defeatedNpcs.Count, GetTopScores());
     }
 
     private void SaveScore()
@@ -194,10 +184,10 @@ public class GameManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
 
         // NPC 상태 초기화
-        foreach (NPCActions npc in npcs)
-        {
-            NPCPool.Instance.ReturnObject(npc.gameObject);
-        }
+        //foreach (NPCActions npc in npcs)
+        //{
+        //    _npcPool.ReturnObject(npc.gameObject);
+        //}
         npcs.Clear(); // NPC 리스트 초기화
         ClearCurrentInstances();
         InitializeStage(stage);
@@ -206,15 +196,15 @@ public class GameManager : MonoBehaviour
         PatrolGroup patrolGroup = GetPatrolGroup(stage);
         if (patrolGroup != null)
         {
-            NPCManager.Instance.InitializeNPCs(patrolGroup);
+            _npcManager.InitializeNPCs(patrolGroup);
         }
-        PlayerManager.Instance.MovePlayerToSpawnPoint(stage);
+        _playerManager.MovePlayerToSpawnPoint(stage);
 
         //UI초기화
-        UIManager.Instance.UpdateTimerUI(timer);
-        UIManager.Instance.UpdateScoreUI(score);
-        UIManager.Instance.UpdateStageUI(stage);
-        UIManager.Instance.ShowStageStartMessage(stage);
+        _uiManager.UpdateTimerUI(timer);
+        _uiManager.UpdateScoreUI(score);
+        _uiManager.UpdateStageUI(stage);
+        _uiManager.ShowStageStartMessage(stage);
         RoundText[] roundTexts = FindObjectsOfType<RoundText>();
         foreach (RoundText rt in roundTexts)
         {
@@ -256,17 +246,18 @@ public class GameManager : MonoBehaviour
             currentPatrolGroupInstance.name = $"PatrolGroup_Stage_{stageData.stageNumber}";
         }
 
-        //NPC 스폰 포인트 초기화
-        if (stageData.npcSpawnPointPrefab != null)
-        {
-            currentNpcSpawnPointInstance = Instantiate(stageData.npcSpawnPointPrefab);            
-        }
+        ////NPC 스폰 포인트 초기화
+        //if (stageData.npcSpawnPointPrefab != null)
+        //{
+        //    currentNpcSpawnPointInstance = Instantiate(stageData.npcSpawnPointPrefab);
+        //    _npcPool = currentNpcSpawnPointInstance.GetComponent<NPCPool>();
+        //}
 
         //플레이어 스폰 포인트 초기화
         if (stageData.playerSpawnPointPrefab != null)
         {
             currentPlayerSpawnPointInstance = Instantiate(stageData.playerSpawnPointPrefab);
-            PlayerManager.Instance.MovePlayerToSpawnPoint(stageData.stageNumber);
+            _playerManager.MovePlayerToSpawnPoint(stageData.stageNumber);
         }
 
         // NPC 초기화
@@ -275,7 +266,7 @@ public class GameManager : MonoBehaviour
             PatrolGroup patrolGroup = currentPatrolGroupInstance.GetComponent<PatrolGroup>();
             if (patrolGroup != null)
             {
-                NPCManager.Instance.InitializeNPCs(patrolGroup);
+                _npcManager.InitializeNPCs(patrolGroup);
             }
         }
     }
@@ -288,20 +279,20 @@ public class GameManager : MonoBehaviour
         isNextRoundTriggered = false; // 새로운 라운드를 시작할 때 초기화
 
         //NPC 상태 초기화
-        foreach (NPCActions npc in npcs)
-        {
-            NPCPool.Instance.ReturnObject(npc.gameObject);
-        }
+        //foreach (NPCActions npc in npcs)
+        //{
+        //    _npcPool.ReturnObject(npc.gameObject);
+        //}
         npcs.Clear(); //NPC 리스트 초기화
         ClearCurrentInstances();
         InitializeStage(stage);
-        
-        PlayerManager.Instance.MovePlayerToSpawnPoint(stage);
+
+        _playerManager.MovePlayerToSpawnPoint(stage);
 
         //점수를 제외한 UI 초기화
-        UIManager.Instance.UpdateTimerUI(timer);
-        UIManager.Instance.UpdateStageUI(stage);
-        UIManager.Instance.ShowStageStartMessage(stage);
+        _uiManager.UpdateTimerUI(timer);
+        _uiManager.UpdateStageUI(stage);
+        _uiManager.ShowStageStartMessage(stage);
 
         //RoundText 오브젝트에 라운드 값 전달
         RoundText[] roundTexts = FindObjectsOfType<RoundText>();

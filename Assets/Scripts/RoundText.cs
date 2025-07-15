@@ -9,6 +9,6 @@ public class RoundText : MonoBehaviour
 
     public void UpdateRoundText(int round)
     {
-        textMesh.text = $"Stage {round}";
+        textMesh.text = $"Stage {round + 1}";
     }
 }

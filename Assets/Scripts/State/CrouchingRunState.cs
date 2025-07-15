@@ -10,17 +10,17 @@ public class CrouchingRunState : IState
         this.palyer = palyer;
     }
 
-    public void Enter()
+    public void EnterState()
     {
         
     }
 
-    public void Exit()
+    public void ExitState()
     {
         
     }
 
-    public void Update()
+    public void UpdateState()
     {
        
     }

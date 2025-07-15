@@ -13,16 +13,17 @@ public class Bullets : MonoBehaviour
     private void Start()
     {
         Rigidbody rb = GetComponent<Rigidbody>();
-        rb.useGravity = false;
+        if (rb != null)
+            rb.useGravity = false;
     }
+
     private void Update()
     {
         transform.Rotate(0, 0, spinSpeed * Time.deltaTime);
         if (!hasHit)
-        { 
+        {
             ShootRaycast();
         }
-        hasHit = false;
     }
 
     private void ShootRaycast()
@@ -30,21 +31,25 @@ public class Bullets : MonoBehaviour
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit, 2f))
-        {            
+        {
             OnBulletHit(hit);
         }
     }
+
     private void OnBulletHit(RaycastHit hit)
     {
-        if (!hasHit)
-        {
-            NPCController npc = hit.collider.GetComponentInParent<NPCController>();
+        if (hasHit) return;
 
-            if (npc != null)
-            {
-                npc.RayHit(hit.point, hit.normal, hit.collider.tag);
-                hasHit = true;
-            }
+        NPCController npc = hit.collider.GetComponentInParent<NPCController>();
+        if (npc == null)
+            npc = hit.collider.GetComponentInChildren<NPCController>();
+        if (npc == null)
+            npc = hit.collider.transform.root.GetComponent<NPCController>();
+
+        if (npc != null)
+        {
+            npc.RayHit(hit.point, hit.normal, hit.collider.tag);
+            hasHit = true;
         }
     }
 }

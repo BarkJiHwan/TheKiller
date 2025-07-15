@@ -10,17 +10,17 @@ public class DeathState : IState
         this.player = player;
     }
 
-    public void Enter()
+    public void EnterState()
     {
         
     }
 
-    public void Exit()
+    public void ExitState()
     {
         
     }
 
-    public void Update()
+    public void UpdateState()
     {
         
     }

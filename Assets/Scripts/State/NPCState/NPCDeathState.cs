@@ -12,37 +12,29 @@ public class NPCDeathState : IState
     {
         this.npc = npc;
     }
-    public void Enter()
+    public void EnterState()
     {
         if (!isDead)
-        //GameManager에서 점수 증가
-        //죽은 상황에 따라 점수 부여
         {
             if (npc.animator.GetBool("CrawlDie") == true)
             {
                 npc.animator.SetTrigger("CrawlDie");
-                GameManager.Instance.AddScore(100);
             }
             else if (npc.animator.GetBool("CrawlDie") == false)
             {
                 npc.animator.SetTrigger("Dead");
-                GameManager.Instance.AddScore(200);
             }
             isDead = true;
         }
-        // NPC의 모든 행동을 멈추기
-        npc.GetComponent<Rigidbody>().isKinematic = true;
-        npc.GetComponent<Collider>().enabled = false;
-
-        
-        GameObject.Destroy(npc.gameObject, 5f);
-        
+        //// NPC의 모든 행동을 멈추기
+        //npc.GetComponent<Rigidbody>().isKinematic = true;
+        //npc.GetComponent<Collider>().enabled = false;
     }
-    public void Update()
+    public void UpdateState()
     {
         // 사망 상태여서 없음
     }
-    public void Exit()
+    public void ExitState()
     {
         // 사망 상태여서 없음
     }

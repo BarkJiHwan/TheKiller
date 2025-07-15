@@ -1,11 +1,6 @@
-using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.InputSystem.Controls;
-using static UnityEditor.VersionControl.Asset;
 
 public enum NPCState
 {
@@ -26,7 +21,7 @@ public class NPCActions : MonoBehaviour
     public float runSpeed = 5f; // 달리기 속도
     public float alertDistance; // 경고 거리
     private float idleDuration;
-    
+
     [Header("타겟 설정")]
     public bool isTargetNPC;
     [Header("엔피시 생존 여부 시작은 false")]
@@ -36,11 +31,14 @@ public class NPCActions : MonoBehaviour
 
     public Animator animator;
 
+    private WaitForSeconds  _waitForSec;
     private IState currentState;
     private Dictionary<NPCState, IState> states;
     private PatrolPoint[] patrolPoints;
     private Transform coverPoint;
 
+    private ScoreMgr _scoreMgr;
+    private NPCManager _npcMgr;
     public float PatrolSpeed
     {
         get => patrolSpeed;
@@ -52,10 +50,18 @@ public class NPCActions : MonoBehaviour
         set => idleDuration = value;
     }
 
-    void Start()
-    {        
+    private void Awake()
+    {
+        if(_npcMgr == null)
+        {
+            _npcMgr = GameObject.Find("NPCManager").GetComponent<NPCManager>();
+        }
+        if(_scoreMgr == null)
+        {
+            _scoreMgr = GameObject.Find("ScoreMgr").GetComponent<ScoreMgr>();
+        }
+
         animator = GetComponent<Animator>();
-        originalPatrolSpeed = patrolSpeed;
         states = new Dictionary<NPCState, IState>
         {
             { NPCState.IDLE, new NPCIdleState(this)},
@@ -65,32 +71,55 @@ public class NPCActions : MonoBehaviour
             { NPCState.DEATH, new NPCDeathState(this)},
             { NPCState.CRAWL, new NPCCrawlState(this)},
         };
+    }
+    void Start()
+    {
+        _waitForSec = new WaitForSeconds(4f);
+        originalPatrolSpeed = patrolSpeed;
+        currentState = states[NPCState.IDLE];
         ChangeState(NPCState.IDLE);
     }
     void Update()
     {
-        currentState.Update();
+        if (isDead)
+        return;
+
+        currentState.UpdateState();
     }
 
     public void ChangeState(NPCState newState)
     {
         if (currentState != null)
-        {
-            currentState.Exit();
+        {// 기존 상태 종료 보장받기
+            currentState.ExitState();
         }
-        if (states.ContainsKey(newState)) 
-        {
+        else
+        {// 예외 처리
+            CheckState(newState);
+        }
+        if (states.ContainsKey(newState))
+        {// 새로운 상태로 바꾸기
             currentState = states[newState];
-            currentState.Enter();
+            currentState.EnterState();
+        }
+        else
+        {// 예외 처리
+            CheckState(newState);
+        }
+    }
+
+    private void CheckState(NPCState newState)
+    {
+        Debug.LogError("딕셔너리에 안담김: " + newState);
+        if (states.ContainsKey(NPCState.PATROL))
+        {
+            currentState = states[NPCState.PATROL];
+            currentState.EnterState();
         }
         else
         {
-            Debug.LogError("딕셔너리에 안담김: " + newState);
-        }
-        if (currentState == null)
-        {
-            Debug.LogError("커런트 오류 " + newState);
-
+            Debug.LogError("패트롤도 없음");
+            currentState = null;
         }
     }
 
@@ -105,23 +134,25 @@ public class NPCActions : MonoBehaviour
         this.alertDistance = alertDistance;
     }
     public PatrolPoint[] GetPatrolPoints() => patrolPoints;
-    public Transform GetCoverPoint() => coverPoint;    
+    public Transform GetCoverPoint() => coverPoint;
     public float GetAlertDistance() => alertDistance;
 
     public void HeadShot()
     {
+        _scoreMgr.AddScore(200);
         Die();
     }
 
     public void BodyShot()
-    {   
+    {
         bodyHitCount++;
         if (bodyHitCount <= 1)
-        {
+        {            
             ChangeState(NPCState.CRAWL);
         }
-        else if(bodyHitCount >= 2)
+        else if (bodyHitCount >= 2)
         {
+            _scoreMgr.AddScore(100);
             Die();
         }
     }
@@ -129,7 +160,13 @@ public class NPCActions : MonoBehaviour
     private void Die()
     {
         isDead = true;
-        GameManager.Instance.RemoveNPC(this);
+        StartCoroutine(DieAnimation());        
+    }
+    IEnumerator DieAnimation()
+    {
         ChangeState(NPCState.DEATH);
+        yield return _waitForSec;
+
+        _npcMgr.RemoveNPC(this);
     }
 }

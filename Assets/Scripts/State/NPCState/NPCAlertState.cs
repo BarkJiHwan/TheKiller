@@ -5,19 +5,18 @@ using UnityEngine;
 public class NPCAlertState : IState
 {
     private NPCActions npc;
-    private float alertDuration = 2f;
     private float alertTimer;
     public NPCAlertState(NPCActions npc)
     {
         this.npc = npc;
     }
-    public void Enter()
+    public void EnterState()
     {
         npc.PatrolSpeed = 0;
         npc.IdleDuration = Random.Range(2f, 5f);
         npc.animator.SetBool("Alert", true);
     }
-    public void Update()
+    public void UpdateState()
     {
         alertTimer += Time.deltaTime;
         if (alertTimer >= npc.IdleDuration && npc.animator.GetBool("Patrol") == true)
@@ -33,7 +32,7 @@ public class NPCAlertState : IState
             return;
         }
     }
-    public void Exit()
+    public void ExitState()
     {
         npc.animator.SetBool("Alert", false);
     }

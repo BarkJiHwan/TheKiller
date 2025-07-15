@@ -12,14 +12,14 @@ public class NPCIdleState : IState
         this.npc = npc;        
     }
 
-    public void Enter()
+    public void EnterState()
     {
         npc.PatrolSpeed = 0;
         npc.IdleDuration = Random.Range(2f, 5f);  // Idle 상태에서 멈춰있는 시간
         npc.animator.SetBool("Idle", true); // Idle 애니메이션 시작                
     }
 
-    public void Update()
+    public void UpdateState()
     {
         idleTimer += Time.deltaTime;
         if (idleTimer >= npc.IdleDuration && npc.animator.GetBool("Patrol") == false)
@@ -27,18 +27,18 @@ public class NPCIdleState : IState
             // 일정 시간 대기 후 다음 상태로 전환
             idleTimer = 0f;
             npc.ChangeState(NPCState.PATROL);
-            return;
+            return; // 상태 전환 이후 로직 중단 예기치 못한 오류 차단
         }
         if (idleTimer >= npc.IdleDuration && npc.animator.GetBool("Patrol") == true)
         {
             // 일정 시간 대기 후 다음 상태로 전환
             idleTimer = 0f;            
             npc.ChangeState(NPCState.PATROL);
-            return;
+            return; // 상태 전환 이후 로직 중단 예기치 못한 오류 차단
         }
     }
 
-    public void Exit()
+    public void ExitState()
     {
         npc.animator.SetBool("Idle", false); // Idle 애니메이션 종료
     }

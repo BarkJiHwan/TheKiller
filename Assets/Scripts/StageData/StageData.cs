@@ -7,7 +7,6 @@ public class StageData : ScriptableObject
 {
     public int stageNumber;
     public GameObject patrolGroupPrefab;
-    public GameObject npcSpawnPointPrefab;
     public GameObject playerSpawnPointPrefab;
 }
 

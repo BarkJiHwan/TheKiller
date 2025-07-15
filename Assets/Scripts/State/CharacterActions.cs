@@ -12,22 +12,16 @@ public abstract class CharacterActions : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         states = new Dictionary<System.Enum, IState>();
-        InitializeStates();
-        //if (states.ContainsKey(NPCState.IDLE))
-        //{
+        InitializeStates();        
         ChangeState(NPCState.IDLE);
-        //}
-        //else
-        //{
-        //    Debug.LogError("아이들오류!");
-        //}
+        
     }
 
     protected abstract void InitializeStates();
 
     private void Update()
     {
-        currentState?.Update();
+        currentState?.UpdateState();
     }
 
     public void ChangeState(System.Enum newState)
@@ -36,10 +30,10 @@ public abstract class CharacterActions : MonoBehaviour
         {
             if (currentState != null)
             {
-                currentState.Exit();
+                currentState.ExitState();
             }
             currentState = states[newState];
-            currentState.Enter();
+            currentState.EnterState();
         }
         else
         {
