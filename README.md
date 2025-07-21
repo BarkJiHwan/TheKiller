@@ -7,10 +7,10 @@ TheKiller 프로젝트 설명
 - 킬러의 랭킹에 도전하라!!
 
 ## 씬구성
-Assets/Scenes/TileScenes
-Assets/Scenes/InGameScenes
+- Assets/Scenes/TileScenes
+- Assets/Scenes/InGameScenes
 
-Assets/Scenes/SampleScene 리팩토링 전에 사용하던 테스트 씬
+- Assets/Scenes/SampleScene 리팩토링 전에 사용하던 테스트 씬
 
 ## 포트폴리오 코드 위치
 - Assets/Scripts/Manager > 매니저 코드 모음
