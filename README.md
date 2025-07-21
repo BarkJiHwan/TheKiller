@@ -14,10 +14,14 @@ TheKiller 프로젝트 설명
 
 ## 포트폴리오 코드 위치
 - Assets/Scripts/Manager > 매니저 코드 모음
+> https://github.com/BarkJiHwan/TheKiller/blob/main/Assets/Scripts/Manager/GameMgr.cs
+
 - Assets/Scripts/State/NPCState > NPC상태 모음
+> https://github.com/BarkJiHwan/TheKiller/tree/main/Assets/Scripts/State/NPCState
 
 ## 시네머신 카메라
 - Assets/Scripts/CameraAction > 줌인아웃 등..
+> https://github.com/BarkJiHwan/TheKiller/blob/main/Assets/Scripts/CameraAction.cs
 
 ## 포트폴리오 ClassDiagramImg
 - ClassDiagram_Img
