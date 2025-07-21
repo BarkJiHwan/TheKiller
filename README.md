@@ -1,5 +1,13 @@
+<img src="https://capsule-render.vercel.app/api?type=모양&color=색상코드&height=높이&section=header&text=텍스트&fontSize=텍스트크기" />
+
 # TheKiller
 TheKiller 프로젝트 설명
+제목: The Killer
+기간: 25.02.19 ~ 25.03.03 (약 2주)
+규모: 개발 1명
+환경: PC
+장르: 3인칭 슈팅
+담당: 기획 및 개발 과정 전체
 
 ## 소개
 - 저격 지점에서 최대한 많은 적을 처치해라
